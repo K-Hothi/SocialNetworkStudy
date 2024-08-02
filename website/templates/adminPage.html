@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page Redesign</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .section {
+            width: calc(30% - 20px);
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .section:nth-child(3n + 1) {
+            margin-right: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        hr {
+            margin: 30px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        .item-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .item-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .item-description {
+            font-size: 16px;
+            color: #333;
+            flex-grow: 1;
+        }
+
+        .remove-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .remove-btn {
+            background-color: transparent;
+            border: none;
+            color: #d9534f;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .remove-btn:hover {
+            color: #c9302c;
+        }
+
+        .members-container {
+            width: calc(30% - 20px);
+            margin-bottom: 20px;
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .members-count {
+            font-size: 60px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        @media screen and (max-width: 768px) {
+            .section {
+                width: calc(50% - 20px);
+            }
+
+            .members-container {
+                width: calc(50% - 20px);
+            }
+
+            .section:nth-child(odd) {
+                margin-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Admin Page Redesign</h1>
+<div style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; text-align: center;"
+     onclick="window.location.href = 'adminBoard';">Reload Page
+</div>
+<div class="container">
+    <div class="section">
+        <h1>Send Message to All Users</h1>
+        <form id="messageForm" method="post" action="#">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="keyword">Keyword:</label>
+            <input type="text" id="keyword" name="keyword" required>
+
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+
+            <input type="submit" value="Send Message">
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>All Classes</h2>
+        {% for class in allClasses%}
+        <div class="item-container">
+            <div class="item-info">
+                <div class="item-name">{{class.name}}</div>
+                <div class="item-description">{{class.description}}</div>
+            </div>
+            <form class="remove-form" id="removeForm" action="#" method="post">
+                <input type="hidden" name="classRemove" id="classRemove" value="{{class.id}}">
+                <button type="submit" class="remove-btn"><i class="fas fa-trash-alt"></i> Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="members-container">
+        <h2>Members</h2>
+        <p class="members-count">{{numberOfMembers}}</p>
+    </div>
+
+    <div class="section">
+        <h2>All Notes</h2>
+        {% for note in allNotes %}
+        <div class="item-container">
+            <div class="item-info">
+                <div class="item-name">{{note.name}}</div>
+                <div class="item-description">{{note.filename}}</div>
+            </div>
+            <form class="remove-form" id="removeForm" action="#" method="post">
+                <input type="hidden" name="notesRemove" id="notesRemove" value="{{note.id}}">
+                <button type="submit" class="remove-btn"><i class="fas fa-trash-alt"></i> Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h2>All Tests</h2>
+        {% for test in allTests %}
+        <div class="item-container">
+            <div class="item-info">
+                <div class="item-name">{{test.name}}</div>
+                <div class="item-description">{{test.filename}}</div>
+            </div>
+            <form class="remove-form" id="removeForm" action="#" method="post">
+                <input type="hidden" name="testsRemove" id="testsRemove" value="{{test.id}}">
+                <button type="submit" class="remove-btn"><i class="fas fa-trash-alt"></i> Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h2>All Qcards</h2>
+        {% for card in allCards %}
+        <div class="item-container">
+            <div class="item-info">
+                <div class="item-name">{{card.name}}</div>
+                <div class="item-description">{{card.filename}}</div>
+            </div>
+            <form class="remove-form" id="removeForm" action="#" method="post">
+                <input type="hidden" name="cardsRemove" id="cardsRemove" value="{{card.id}}">
+                <button type="submit" class="remove-btn"><i class="fas fa-trash-alt"></i> Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h1>Reviews</h1>
+        {% for r in reviewsAll %}
+        <div class="item-container">
+            <div class="item-info">
+                <div class="item-name">{{r.rating}}</div>
+                <div class="item-description">{{r.comment}}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="section">
+        <h2>Global Messages</h2>
+        {% for m in Messages %}
+        <div class="item-container">
+            <div class="item-info">
+                <div class="item-name">{{m.title}}</div>
+                <div class="item-description">{{m.body}}</div>
+            </div>
+            <form class="remove-form" id="removeForm" action="#" method="post">
+                <input type="hidden" name="messageRemove" id="messageRemove" value="{{m.id}}">
+                <button type="submit" class="remove-btn"><i class="fas fa-trash-alt"></i> Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>
+
+</body>
+</html>

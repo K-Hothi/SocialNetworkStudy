@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Discussion Forum</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        .discussion-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tab.active {
+            background-color: #0056b3;
+        }
+
+        .content {
+            display: none;
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            border: 1px solid #ccc;
+            overflow-y: auto;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .message {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .own-message {
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .user-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-details span {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .follow-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .follow-button:hover {
+            background-color: #0056b3;
+        }
+
+        .description {
+            margin-bottom: 20px;
+        }
+
+        .message-input {
+            margin-top: 20px;
+        }
+
+        .message-input textarea {
+            width: calc(100% - 80px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        .message-input button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .message-input button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" style="background-color: #333; color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <button class="back-button" style="background-color: #555; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">Back</button>
+        <h1 class="title" style="font-size: 24px; font-weight: bold; margin: 0;">Page Title</h1>
+        <div class="logo">
+            <a href="/" class="fas fa-graduation-cap" style="color: white; font-size: 24px; text-decoration: none;"></a>
+        </div>
+    </div>
+
+<div class="container">
+    <div class="header">
+        <button class="back-button" onclick="goBack()">Back</button>
+        <div class="discussion-name">Discussion Name</div>
+        <!-- Add any other elements you want in the header -->
+    </div>
+
+    <div class="description">
+        <p>This discussion is about...</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('messages')">Messages</div>
+        <div class="tab" onclick="showTab('users')">Users</div>
+    </div>
+
+    <div id="messages" class="content active">
+        <div class="message own-message">
+            <div class="user">You</div>
+            <div class="text">Hey, what's up?</div>
+        </div>
+        <div class="message">
+            <div class="user">John</div>
+            <div class="text">Not much, just chilling. How about you?</div>
+        </div>
+        <div class="message own-message">
+            <div class="user">You</div>
+            <div class="text">Same here. Did you hear about the new update?</div>
+        </div>
+        <div class="message">
+            <div class="user">Alice</div>
+            <div class="text">Yeah, it looks pretty cool.</div>
+        </div>
+        <!-- More messages can be added here -->
+    </div>
+
+    <div id="users" class="content">
+        <div class="user-container">
+            <img class="user-avatar" src="https://via.placeholder.com/50" alt="User Avatar">
+            <div class="user-details">
+                <span>Name: John</span>
+                <span>Email: john@example.com</span>
+                <button class="follow-button" onclick="toggleFollow(this)">Follow</button>
+            </div>
+        </div>
+        <div class="user-container">
+            <img class="user-avatar" src="https://via.placeholder.com/50" alt="User Avatar">
+            <div class="user-details">
+                <span>Name: Alice</span>
+                <span>Email: alice@example.com</span>
+                <button class="follow-button" onclick="toggleFollow(this)">Follow</button>
+            </div>
+        </div>
+        <!-- More users can be added here -->
+    </div>
+
+    <div class="message-input">
+        <textarea placeholder="Type your message here..."></textarea>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    function toggleFollow(button) {
+        if (button.innerText === "Follow") {
+            button.innerText = "Unfollow";
+            button.style.backgroundColor = "#dc3545"; // Change button color
+        } else {
+            button.innerText = "Follow";
+            button.style.backgroundColor = "#007bff"; // Change button color
+        }
+    }
+
+    function showTab(tabName) {
+        var tabs = document.getElementsByClassName('tab');
+        var contents = document.getElementsByClassName('content');
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].innerText.toLowerCase() === tabName.toLowerCase()) {
+                tabs[i].classList.add('active');
+                contents[i].classList.add('active');
+            } else {
+                tabs[i].classList.remove('active');
+                contents[i].classList.remove('active');
+            }
+        }
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+
+    function sendMessage() {
+        // Add logic to send the message
+    }
+</script>
+
+</body>
+</html>

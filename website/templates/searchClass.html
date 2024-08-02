@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .class-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .class-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .class-item:last-child {
+            border-bottom: none;
+        }
+        .class-name {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .class-description {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #1c6ae7; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer; z-index: 9999;">
+        <a href="/" class="fas fa-graduation-cap" style="color: white; font-size: 24px; text-decoration: none;"></a>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages%}
+            {% if category == 'error' %}
+                <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f44336; color: white; padding: 10px; text-align: center;" id="error-message">
+                    {{message}}
+                </div>
+            {% else %}
+                <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #00a803; color: white; padding: 10px; text-align: center;" id="error-message">
+                    {{message}}
+                </div>
+            {% endif %}
+        {% endfor%}
+    {% endif %}
+{% endwith %}
+<div class="search-container" style="margin-top: 20px; margin-bottom: 20px; display: flex; justify-content: center;">
+    <form action="/searchClass" method="post" style="width: 100%; max-width: 400px; display: flex;">
+        <input name="searchName" type="text" class="search-input" placeholder="Search..." style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; outline: none;">
+        <button type="submit" class="search-button" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-left: 10px;">Search</button>
+    </form>
+</div>
+
+    
+    <h1>Search Results</h1>
+    <ul class="class-list">
+        <!-- Example list item, replace with dynamic content -->
+        {% if not isClass %}
+        <button onclick="location.href = '/addClass'" style="margin-bottom:10px; padding: 12px 24px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; width: 100%; transition: background-color 0.3s ease;">
+            <span style="display: flex; align-items: center; justify-content: center;">
+        
+                <span style="margin-right: 5px;"><b> Add a class?</b> <i>{{name}}</i></span>
+                
+            </span>
+        </button>
+        
+        
+        
+        {% endif%}
+        {% for c in matches%}
+            <div style="border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="margin-bottom: 10px; color: black;"><a href="#" style="text-decoration: none; color: inherit;">{{c.name}}</a></h2>
+                    <div>
+                        {% if c in followedClassesMain %}
+                            <form method='post' action='/searchClass' style="display: inline-block;">
+                                <input name="cid" id="cid" value="{{c.id}}" style="display: none">
+                                <input name="searchName" id="searchName" value="{{c.name}}" style="display: none">
+                                <button type='submit' id='follow' name='follow' style="padding: 5px 10px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; text-decoration: none;">Unfollow</button>
+                            </form>
+                        {% else %}
+                            <form method='post' action='/searchClass' style="display: inline-block;">
+                                <input name="cid" id="cid" value="{{c.id}}" style="display: none">
+                                <input name="searchName" id="searchName" value="{{c.name}}" style="display: none">
+                                <button type='submit' id='follow' name='follow' style="padding: 5px 10px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; text-decoration: none;">Follow</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 15px; color: grey;">{{c.description}}</p>
+                <div>
+                    <form method="post" action="seeMore" style="display: inline-block;">
+                <input type="hidden" name="classn" id="classn" value="{{c.name}}">
+                <button type="submit" style="margin-top: 10px; padding: 10px 40px; background-color: green; color: white; border: none; border-radius: 1px; cursor: pointer; font-size: 16px;">See More</button>
+            </form>
+            
+                </div>
+            </div>
+        
+        {% endfor %}
+    
+        
+        <!-- Add more list items as needed -->
+    </ul>
+</body>
+</html>

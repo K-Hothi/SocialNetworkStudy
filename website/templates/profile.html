@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user.username}} Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 20px;
+            flex-wrap:wrap-reverse;
+        }
+
+        .profile-header .user-info {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .profile-header .user-info h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000000; /* Blue color */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Text shadow for glamour */
+            margin-bottom: 10px;
+        }
+
+        .profile-header .user-info p {
+            margin: 0;
+            font-size: 16px;
+            color: #777; /* Light gray color */
+        }
+
+        .uploads-info {
+            font-size: 18px;
+            color: #007bff; /* Blue color */
+            margin-top: 10px;
+        }
+
+        .uploads-info strong {
+            font-size: 24px;
+            color: #333; /* Darker gray color */
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 20px;
+            overflow-x: auto; /* Allow horizontal scrolling on small screens */
+            -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
+        }
+
+        .tab i {
+            margin-right: 5px;
+        }
+
+        .tab.active {
+            background-color: #007bff; /* Blue color */
+            color: #fff; /* White text */
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .back-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button i {
+            margin-right: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .tabs {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+
+            .tab {
+                flex: none;
+                width: 45%;
+                margin-bottom: 10px;
+            }
+
+            .content-section.active {
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            .profile-header button{
+                margin-top: 8px;
+                font-size: 10px;
+                margin-bottom: 0px;
+                
+            }
+        }
+
+        .user-profile {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .user-info {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .user-info h2 {
+            color: #1a237e; /* Dark blue */
+            margin: 0;
+        }
+
+        .user-info p {
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .user-stats {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.user-stats p {
+    margin-right: 20px; /* Add some spacing between the items */
+    margin-bottom: 10px; /* Add some spacing below each item */
+}
+
+    </style>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages%}
+                {% if category == 'error' %}
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f44336; color: white; padding: 10px; text-align: center;" id="error-message">
+                        {{message}}
+                    </div>
+                {% else %}
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #00a803; color: white; padding: 10px; text-align: center;" id="error-message">
+                        {{message}}
+                    </div>
+                {% endif %}
+            {% endfor%}
+        {% endif %}
+    {% endwith %}
+    <div class="container">
+        <div class="profile-header">
+            <div class="user-info">
+                <h1 style="text-transform: capitalize;" >{{user.username}}</h1>
+                <p>Email: {{user.email}}</p>
+                <p>Study: {{user.studying}}</p>
+                <br>
+                <div class="user-stats">
+                    <p class="uploads-info">&nbsp<i class="fas fa-upload"></i> Uploads: {{submission}} | </p>
+                    <p class="uploads-info">&nbsp<i class="fas fa-user-friends"></i> &nbsp; Following: {{followingCount}} | </p>
+                    <p class="uploads-info">&nbsp<i class="fas fa-users"></i>&nbsp; Friends: {{followers_count}} </p>
+                </div>
+            </div>
+           
+            <div style="position: fixed; top: 20px; right: 20px; width: 60px; height: 60px; background-color: #1c6ae7; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer; z-index: 9999;">
+                <a href="/" class="fas fa-graduation-cap" style="color: white; font-size: 24px; text-decoration: none;"></a>
+            </div>
+            
+        </div>
+        <div class="tabs">
+            <div class="tab active" onclick="showTab(this, 'uploads')"><i class="fas fa-upload"></i>Uploads</div>
+            <div class="tab" onclick="showTab(this, 'following')"><i class="fas fa-users"></i>Following</div>
+            <div class="tab" onclick="showTab(this, 'followers')"><i class="fas fa-user-friends"></i>Followers</div>
+            <div class="tab" onclick="showTab(this, 'settings')"><i class="fas fa-cogs"></i>Settings</div>
+            <div class="tab" onclick="showTab(this, 'messages')"><i class="fas fa-envelope"></i>Messages</div>
+        </div>
+        <div class="content">
+            <div id="uploads" class="content-section active">
+                <h2>Uploads</h2>
+                <div style="display: flex; flex-wrap: wrap; justify-content:center">
+                {% for note in Notes%}
+                <!--<a href={{note.fileName}} target="_blank">{{note.fileName}}</a>-->
+                <div style="width:30vw; flex: 1 1 auto; margin: 20px 10px; background-color: #f5f5f5; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: wrap;">{{note.name}}</div>
+                        <form id="deleteForm" action="profile" method="POST" style="display: inline;">
+                            <input style="display: none;" id="deleteNote" name="deleteNote" value="{{note.id}}">
+                            <button type="submit" style="background-color: transparent; border: none; cursor: pointer;">
+                                <i class="fas fa-trash-alt" style="color: #dc3545; font-size: 24px;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <p style="color: grey;">{{note.fileName}}</p>
+                    <a href="{{note.fileName}}" target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 24px; display: block; margin-bottom: 20px;">View Notes</a>
+                    <a href="{{note.fileName}}" style="text-decoration: none; color: grey; font-size: 15px; display: flex; align-items: center;" download>
+                        or download
+                        <i class="fas fa-download" style="margin-left: 5px;"></i>
+                    </a>
+                    <i class="fas fa-check-circle" style="position: absolute; bottom: 10px; right: 10px; color: #28a745; font-size: 24px;"></i>
+                </div>
+                
+                {% endfor %}
+                {% for test in Tests%}
+                <div style="width:30vw; flex: 1 1 auto; margin: 20px 10px; background-color: #f5f5f5; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: wrap;">{{test.name}}</div>
+                        <form id="deleteForm" action="profile" method="POST" style="display: inline;">
+                            <input style="display: none;" id="deleteTest" name="deleteTest" value="{{test.id}}">
+                            <button type="submit" style="background-color: transparent; border: none; cursor: pointer;">
+                                <i class="fas fa-trash-alt" style="color: #dc3545; font-size: 24px;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <p style="color: grey">{{test.fileName}}</p>
+                    <a href="{{test.fileName}}" target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 24px; display: block; margin-bottom: 20px;">View Tests</a>
+                    <a href="{{test.fileName}}" style="text-decoration: none; color: grey; font-size: 15px; display: flex; align-items: center;" download>
+                        or download
+                        <i class="fas fa-download" style="margin-left: 5px;"></i>
+                    </a>
+                    <i class="fas fa-check-circle" style="position: absolute; bottom: 10px; right: 10px; color: #28a745; font-size: 24px;"></i>
+                </div>
+              
+                {% endfor %}
+                {% for card in Cards %}
+                <div style="width:30vw; flex: 1 1 auto; margin: 20px 10px; background-color: #f5f5f5; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: wrap;">{{card.name}}</div>
+                        <form id="deleteForm" action="profile" method="POST" style="display: inline;">
+                            <input style="display: none;" id="deleteCard" name="deleteCard" value="{{card.id}}">
+                            <button type="submit" style="background-color: transparent; border: none; cursor: pointer;">
+                                <i class="fas fa-trash-alt" style="color: #dc3545; font-size: 24px;"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <p style="color: grey">{{card.fileName}}</p>
+                    <a href="{{card.fileName}}" target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 24px; display: block; margin-bottom: 20px;">View Q-Cards</a>
+                    <a href="{{card.fileName}}" style="text-decoration: none; color: grey; font-size: 15px; display: flex; align-items: center;" download>
+                        or download
+                        <i class="fas fa-download" style="margin-left: 5px;"></i>
+                    </a>
+                    <i class="fas fa-check-circle" style="position: absolute; bottom: 10px; right: 10px; color: #28a745; font-size: 24px;"></i>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+            <div id="following" class="content-section">
+                <h2>Following</h2>
+                <div style="overflow-y: scroll; height: 70vh; ">
+                    {% for f in followedClassesMain %}
+                    <div style="border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            <h2 style="margin-bottom: 10px; color: black;"><a href="#" style="text-decoration: none; color: inherit;">{{f.name}}</a></h2>
+            <p style="font-size: 16px; margin-bottom: 15px; color:grey;">{{f.description}}</p>
+            <div style="display: inline-block;">
+                {% if f in followedClassesMain %}
+        <form method='post' action='follow' style="display: inline-block;">
+            <input name="classid" id="classid" value="{{f.id}}" style="display: none">
+            <button type='submit' id='follow' style="padding: 10px 40px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">Unfollow</button>
+        </form>
+        {% else %}
+        <form method='post' action='follow' style="display: inline-block;">
+            <input name="classid" id="classid" value="{{c.id}}" style="display: none">
+            <button type='submit' id='follow' style="padding: 10px 40px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">Follow</button>
+        </form>
+        {% endif %}
+    
+        <form method='post' action='seeMore' style="display: inline-block;">
+            <input name="classn" id="classn" value="{{f.name}}" style="display: none">
+            <button type='submit' style="margin-top: 10px; padding: 10px 40px; background-color: rgb(0, 190, 0); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">See More</button>
+        </form>
+    </div>
+    
+            </div>
+            {% endfor %}
+        </div>
+            </div>
+            <div id="followers" class="content-section">
+                <h2>Followers</h2>
+                
+                {% for friend in all_friends %}
+                <div class="user-profile">
+                    <div class="user-info">
+                        <h2>{{friend.username}}</h2>
+                        <p>Email: {{friend.email}}</p>
+                    </div>
+                    <form action="profileOther" method="post">
+                        <input type="hidden" name="user_id_other" id="user_id_other" value="{{friend.id}}">
+                        <button type="submit" style="padding: 10px 20px; background-color: #0056b3; color: white;">View Profile</button>
+                    </form>
+                </div>
+            {% endfor%}
+            </div>
+            <div id="settings" class="content-section">
+                <h2>Settings</h2>
+                
+                <form name='changeUsername' action="#" method="POST" style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+
+                    <div style="margin-bottom: 20px;">
+                        <label for="currentUsername" style="font-weight: bold; color: #0056b3; display: block;">Current Username:</label>
+                        <input type="text" id="currentUsername" name="currentUsername" value="{{user.username}}" readonly style="width: calc(50% - 11px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                        
+                        <label for="newUsername" style="font-weight: bold; color: #0056b3; display: block; margin-left: 30px;">New Username:</label>
+                        <input type="text" id="newUsername" name="newUsername" style=" width: calc(100% - 22px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                    </div>
+                
+                    <div style="text-align: left;">
+                        <input type="submit" value="Change" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                    </div>
+                
+                </form>
+                
+                <form action="#" method="POST" style="max-width: 400px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                
+                    <div style="margin-bottom: 20px;">
+                        <label for="currentEmail" style="font-weight: bold; color: #0056b3; display: block;">Current Email:</label>
+                        <input type="email" id="currentEmail" name="currentEmail" value="{{user.email}}" readonly style="width: calc(50% - 11px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                        
+                        <label for="newEmail" style="font-weight: bold; color: #0056b3; display: block; margin-left: 30px;">New Email:</label>
+                        <input type="email" id="newEmail" name="newEmail" style=" width: calc(100% - 22px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                    </div>
+                
+                    <div style="text-align: left;">
+                        <input type="submit" value="Change" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                    </div>
+                
+                </form>
+                <form action="#" method="POST" style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                
+                    <div style="margin-bottom: 20px;">
+                        <label for="currentPassword" style="font-weight: bold; color: #0056b3; display: block;">Current Password:</label>
+                        <input type="password" id="currentPassword" name="currentPassword" style=" width: calc(100% - 22px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                        
+                        <label for="newPassword" style="font-weight: bold; color: #0056b3; display: block; margin-left: 30px;">New Password:</label>
+                        <input type="password" id="newPassword" name="newPassword" style=" width: calc(100% - 22px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                    </div>
+                
+                    <div style="margin-bottom: 20px;">
+                        <label for="confirmNewPassword" style="font-weight: bold; color: #0056b3; display: block;">Confirm New Password:</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" style="width: calc(100% - 22px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    </div>
+                
+                    <div style="text-align: center;">
+                        <input type="submit" value="Change" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                    </div>
+                
+                </form>
+                
+       
+                
+            </div>
+            <div id="messages" class="content-section">
+                <h2>Messages</h2>
+                {% for m in Messages%}
+                <div style="background-color: #f7fafc; border: 1px solid #d2e8c4; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); backdrop-filter: blur(5px);">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                      <i class="fas fa-envelope" style="font-size: 24px; color: #007bff; margin-right: 10px;"></i>
+                      <div style="font-size: 24px; font-weight: bold; color: #007bff;">{{m.title}}</div>
+                    </div>
+                    <div style="font-size: 18px; font-weight: lighter; color: #333;">{{m.body}}</div>
+                  </div>
+                {% endfor%}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabElement, tabId) {
+            // Hide all content sections
+            var sections = document.querySelectorAll('.content-section');
+            sections.forEach(function (section) {
+                section.classList.remove('active');
+            });
+
+            // Deactivate all tabs
+            var tabs = document.querySelectorAll('.tab');
+            tabs.forEach(function (tab) {
+                tab.classList.remove('active');
+            });
+
+            // Activate the selected tab
+            tabElement.classList.add('active');
+
+            // Show the corresponding content section
+            var contentSection = document.getElementById(tabId);
+            contentSection.classList.add('active');
+        }
+
+        function goBack() {
+            // You can replace this with actual functionality to go back to the home page
+            window.location.href = "/";
+        }
+    </script>
+    <script>
+        document.title = "{{user.username}} Profile".replace(/\b\w/g, function (char) {
+            return char.toUpperCase();
+        });
+    </script>
+</body>
+
+</html>

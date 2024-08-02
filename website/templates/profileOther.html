@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 20px;
+            flex-wrap:wrap-reverse;
+        }
+
+        .profile-header .user-info {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .profile-header .user-info h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000000; /* Blue color */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Text shadow for glamour */
+            margin-bottom: 10px;
+        }
+
+        .profile-header .user-info p {
+            margin: 0;
+            font-size: 16px;
+            color: #777; /* Light gray color */
+        }
+
+        .uploads-info {
+            font-size: 18px;
+            color: #007bff; /* Blue color */
+            margin-top: 10px;
+        }
+
+        .uploads-info strong {
+            font-size: 24px;
+            color: #333; /* Darker gray color */
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 20px;
+            overflow-x: auto; /* Allow horizontal scrolling on small screens */
+            -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
+        }
+
+        .tab i {
+            margin-right: 5px;
+        }
+
+        .tab.active {
+            background-color: #007bff; /* Blue color */
+            color: #fff; /* White text */
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .back-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button i {
+            margin-right: 5px;
+        }
+        .deleteOnSmall{
+                display: contents;
+            }
+            .showOnSmall{
+                display: none;
+            }
+        @media (max-width: 600px) {
+            .deleteOnSmall{
+                display: none;
+            }
+            .showOnSmall{
+                display: contents;
+                margin-bottom: 10px;
+            }
+            .tabs {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+
+            .tab {
+                flex: none;
+                width: 45%;
+                margin-bottom: 10px;
+            }
+
+            .content-section.active {
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            .profile-header button{
+                margin-top: 8px;
+                font-size: 10px;
+                margin-bottom: 0px;
+                
+            }
+        }
+        .user-stats {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.user-stats p {
+    margin-right: 20px; /* Add some spacing between the items */
+    margin-bottom: 10px; /* Add some spacing below each item */
+}
+
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <div class="user-info">
+                <h1>{{user.username}}</h1>
+                <p>Email: {{user.email}}</p>
+                <p>Study: {{user.studying}}</p>
+                <br>
+                <!-- Add follow button here -->
+                {% if user.id in followedUserMain %}
+                    <form method="post" action="profileOther">
+                        <input type="hidden" name="follow_user_other" id="follow_user_other">
+                        <input type="hidden" name="user_id_other" id="user_id_other" value="{{user.id}}">
+                        <button type="submit" style="margin-bottom: 10px; background-color: #c91616; color: #fff; border: none; padding: 6px 14px; font-size: 16px; border-radius: 5px; cursor:pointer;">unfollow</button>
+                    </form>
+                {% else %}
+                    <form method="post" action="profileOther">
+                        <input type="hidden" name="follow_user_other" id="follow_user_other">
+                        <input type="hidden" name="user_id_other" id="user_id_other" value="{{user.id}}">
+                        <button type="submit" style="margin-bottom: 10px; background-color: #007bff; color: #fff; border: none; padding: 6px 14px; font-size: 16px; border-radius: 5px; cursor: pointer;">Follow</button>
+                    </form>
+                {% endif %}
+                <br>
+                <div class="user-stats">
+                    <p class="uploads-info ">&nbsp<i class="fas fa-upload"></i> Uploads: {{submission}} | </p>
+                    <p class="uploads-info ">&nbsp<i class="fas fa-user-friends"></i> &nbsp; Following: {{followingCount}} | </p>
+                    <p class="uploads-info ">&nbsp<i class="fas fa-users"></i>&nbsp; Friends: {{followers_count}} </p>
+                </div>
+                
+            </div>
+           
+            <div style="position: fixed; top: 20px; right: 20px; width: 60px; height: 60px; background-color: #1c6ae7; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer; z-index: 9999;">
+                <a href="/allUsers" class="fas fa-graduation-cap" style="color: white; font-size: 24px; text-decoration: none;"></a>
+            </div>
+        </div>
+    </div>
+        <div class="tabs">
+            <div class="tab active" onclick="showTab(this, 'Notes')"><i class="fas fa-book"></i>Notes</div>
+            <div class="tab" onclick="showTab(this, 'tests')"><i class="fas fa-edit"></i>Practice Tests</div>
+            <div class="tab" onclick="showTab(this, 'cards')"><i class="fas fa-question-circle"></i>Q-Cards</div>  
+            <div class="tab" onclick="showTab(this, 'following')"><i class="fas fa-users"></i>Following</div>    
+            <div class="tab" onclick="showTab(this, 'about')"><i class="fas fa-info-circle"></i>About</div>      
+        </div>
+        <div class="content">
+            <div id="following" class="content-section">
+                <h2></h2>
+                <div style="display: flex; flex-wrap: wrap; justify-content:center">
+                    <div style="overflow-y: scroll; height: 70vh; width: 80% ">
+                        {% for f in followedClassesMain %}
+                        <div style="border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <h2 style="margin-bottom: 10px; color: black;"><a href="#" style="text-decoration: none; color: inherit;">{{f.name}}</a></h2>
+                <p style="font-size: 16px; margin-bottom: 15px; color:grey;">{{f.description}}</p>
+                <div style="display: inline-block;">
+        
+        
+            <form method='post' action='seeMore' style="display: inline-block;">
+                <input name="classn" id="classn" value="{{f.name}}" style="display: none">
+                <button type='submit' style="margin-top: 10px; padding: 10px 40px; background-color: rgb(0, 112, 224); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">See More</button>
+            </form>
+        </div>
+        
+                </div>
+                {% endfor %}
+            </div>
+                </div>
+            </div>
+            <div id="Notes" class="content-section active">
+                <h2>Notes</h2>
+                <div style="overflow-y: scroll; height: 70vh;">
+                    {% for note in Notes %}
+                    <div style="position: relative; width: auto; margin: 20px 10px; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+                        <div class="adjustName" style="margin-bottom: 10px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: wrap; font-size: 20px; font-weight: bold;">{{ note.name }}</div>
+                        <p style="color: #666; margin-bottom: 10px;">Filename: {{ note.fileName }}</p>
+                        <div style="display: flex; justify-content: space-around; align-items: center;">
+                            <a href="{{ note.fileName }}" id="viewNotesLink" target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 18px; flex: 1;">View Notes</a>
+                            <a href="{{ note.fileName }}" style="text-decoration: none; color: #666; font-size: 14px; display: flex; align-items: center;" download>
+                                <span style="margin-right: 5px;">Download</span>
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    {% endfor%}
+                </div>
+            </div>
+            
+            <div id="tests" class="content-section">
+                <h2>Practice Tests</h2>
+                <div style="overflow-y: scroll; height: 70vh; ">
+                    {% for note in Tests %}
+                    <div style="position: relative; width: auto; margin: 20px 10px; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+                        <div class="adjustName" style="margin-bottom: 10px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: wrap; font-size: 20px; font-weight: bold;">{{ note.name }}</div>
+                        <p style="color: #666; margin-bottom: 10px;">Filename: {{ note.fileName }}</p>
+                        <div style="display: flex; justify-content: space-around; align-items: center;">
+                            <a href="{{ note.fileName }}" id="viewNotesLink" target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 18px; flex: 1;">View Test</a>
+                            <a href="{{ note.fileName }}" style="text-decoration: none; color: #666; font-size: 14px; display: flex; align-items: center;" download>
+                                <span style="margin-right: 5px;">Download</span>
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    {% endfor%}
+                </div>
+            </div>
+            <div id="cards" class="content-section">
+                <h2>Q-Cards</h2>
+                <div style="overflow-y: scroll; height: 70vh; ">
+                    {% for note in Cards %}
+                    <div style="position: relative; width: auto; margin: 20px 10px; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+                        <div class="adjustName" style="margin-bottom: 10px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: wrap; font-size: 20px; font-weight: bold;">{{ note.name }}</div>
+                        <p style="color: #666; margin-bottom: 10px;">Filename: {{ note.fileName }}</p>
+                        <div style="display: flex; justify-content: space-around; align-items: center;">
+                            <a href="{{ note.fileName }}" id="viewNotesLink" target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 18px; flex: 1;">View Q-Cards</a>
+                            <a href="{{ note.fileName }}" style="text-decoration: none; color: #666; font-size: 14px; display: flex; align-items: center;" download>
+                                <span style="margin-right: 5px;">Download</span>
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    {% endfor%}
+                </div>
+            </div>
+            <div id="about" class="content-section">
+                <h2>About</h2>
+                <div style="background-color: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <div style="margin: 10px 0;">
+                        <p><strong>Username:</strong> {{user.username}}</p>
+                        <p><strong>Email:</strong> {{user.email}}</p>
+                        <p><strong>Study:</strong> {{user.studying}}</p>
+                        <p><strong>Contributions:</strong> {{submission}}</p>
+                    </div>
+                </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabElement, tabId) {
+            // Hide all content sections
+            var sections = document.querySelectorAll('.content-section');
+            sections.forEach(function (section) {
+                section.classList.remove('active');
+            });
+
+            // Deactivate all tabs
+            var tabs = document.querySelectorAll('.tab');
+            tabs.forEach(function (tab) {
+                tab.classList.remove('active');
+            });
+
+            // Activate the selected tab
+            tabElement.classList.add('active');
+
+            // Show the corresponding content section
+            var contentSection = document.getElementById(tabId);
+            contentSection.classList.add('active');
+        }
+
+        function goBack() {
+            // You can replace this with actual functionality to go back to the home page
+            window.location.href = "/";
+        }
+    </script>
+    <script>
+        document.title = "User Profile".replace(/\b\w/g, function (char) {
+            return char.toUpperCase();
+        });
+    </script>
+</body>
+
+</html>

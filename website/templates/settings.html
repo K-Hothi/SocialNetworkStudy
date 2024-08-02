@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            flex: 1;
+            background-color: rgb(2, 108, 222);
+            color: #fff;
+            padding: 20px;
+            list-style-type: none;
+        }
+
+        .sidebar ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .greeting {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        .option a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .option a:hover {
+            background-color: #0056b3;
+        }
+
+        .option.active a {
+            border-left-color: #ffcc00;
+        }
+
+        .main-content {
+            flex: 3;
+            background-color: #fff;
+            padding: 20px;
+        }
+
+        .section {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+
+        .icon {
+            margin-right: 10px;
+        }
+
+        /* Back to Home Button */
+        .back-home-button {
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-home-button:hover {
+            background-color: #004080;
+        }
+
+        /* Media query for small screens */
+        @media (max-width: 768px) {
+            .back-home-button {
+                margin-bottom: 10px;
+                margin-left: 10px;
+            }
+            .greeting {
+                font-size: 24px;
+                margin-bottom: 20px;
+                margin-top: 10px;
+                margin-left: 15px;
+            }
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                padding: 0;
+            }
+
+            .option {
+                margin-bottom: 0;
+            }
+
+            .option a {
+                padding: 15px 20px;
+            }
+
+            .sidebar ul {
+                border-bottom: 1px solid #fff;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages%}
+            {% if category == 'error' %}
+                <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f44336; color: white; padding: 10px; text-align: center;" id="error-message">
+                    {{message}}
+                </div>
+            {% else %}
+                <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #00a803; color: white; padding: 10px; text-align: center;" id="error-message">
+                    {{message}}
+                </div>
+            {% endif %}
+        {% endfor%}
+    {% endif %}
+{% endwith %}
+    <div class="container">
+        <div class="sidebar">
+            <div class="greeting">Hi, {{user.username}}!</div>
+            <ul>
+                <li class="option active"><a href="#general" onclick="showSection('general')"><i class="fas fa-cogs icon"></i>General</a></li>
+                <li class="option"><a href="#account" onclick="showSection('account')"><i class="fas fa-user icon"></i>Account</a></li>
+                <li class="option"><a href="#privacy" onclick="showSection('privacy')"><i class="fas fa-shield-alt icon"></i>Privacy</a></li>
+                <li class="option"><a href="#notifications" onclick="showSection('notifications')"><i class="fas fa-search icon"></i>Discovery</a></li>
+                <li class="option"><a href="#security" onclick="showSection('security')"><i class="fas fa-lock icon"></i>Security</a></li>
+            </ul>
+            <button class="back-home-button" onclick="goBackHome()">Back to Home</button>
+        </div>
+        <div class="main-content">
+            <section id="general" class="section active">
+                <h2>General Settings</h2>
+                
+                <section style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2>Logout</h2>
+                    <!-- Logout button -->
+                    <button onclick="location.href = 'logout'" style="padding: 10px 40px; background-color: #f44336; color: #fff; border: none; border-radius: 4px; cursor: pointer;" onclick="logout()">Logout</button>
+                </section>
+            </section>
+            <section id="account" class="section">
+                <h2>Account Settings</h2>
+                <form name='changeUsername' action="#" method="POST" style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+
+                    <div style="margin-bottom: 20px;">
+                        <label for="currentUsername" style="font-weight: bold; color: #0056b3; display: block;">Current Username:</label>
+                        <input type="text" id="currentUsername" name="currentUsername" value="{{user.username}}" readonly style="width: calc(50% - 11px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                        
+                        <label for="newUsername" style="font-weight: bold; color: #0056b3; display: block; margin-left: 30px;">New Username:</label>
+                        <input type="text" id="newUsername" name="newUsername" style="width: calc(50% - 11px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                    </div>
+                
+                    <div style="text-align: left;">
+                        <input type="submit" value="Change" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                    </div>
+                
+                </form>
+                
+                <form action="#" method="POST" style="max-width: 400px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                
+                    <div style="margin-bottom: 20px;">
+                        <label for="currentEmail" style="font-weight: bold; color: #0056b3; display: block;">Current Email:</label>
+                        <input type="email" id="currentEmail" name="currentEmail" value="{{user.email}}" readonly style="width: calc(50% - 11px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                        
+                        <label for="newEmail" style="font-weight: bold; color: #0056b3; display: block; margin-left: 30px;">New Email:</label>
+                        <input type="email" id="newEmail" name="newEmail" style="width: calc(50% - 11px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                    </div>
+                
+                    <div style="text-align: left;">
+                        <input type="submit" value="Change" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                    </div>
+                
+                </form>
+                
+                
+            </section>
+            <section id="privacy" class="section">
+                <h2>Privacy Settings</h2>
+                <form action="#" method="POST" style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                
+                    <div style="margin-bottom: 20px;">
+                        <label for="currentPassword" style="font-weight: bold; color: #0056b3; display: block;">Current Password:</label>
+                        <input type="password" id="currentPassword" name="currentPassword" style="width: calc(50% - 11px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                        
+                        <label for="newPassword" style="font-weight: bold; color: #0056b3; display: block; margin-left: 30px;">New Password:</label>
+                        <input type="password" id="newPassword" name="newPassword" style="width: calc(50% - 11px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; display: inline-block;">
+                    </div>
+                
+                    <div style="margin-bottom: 20px;">
+                        <label for="confirmNewPassword" style="font-weight: bold; color: #0056b3; display: block;">Confirm New Password:</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" style="width: calc(100% - 22px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                    </div>
+                
+                    <div style="text-align: center;">
+                        <input type="submit" value="Change" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                    </div>
+                
+                </form>
+            </section>
+            <section id="notifications" class="section">
+                <h2>Discovery Settings</h2>
+                <form action="#" method="POST" style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                    <label for="visibility">Do you want to be visible to other users?</label>
+                    {% if user.is_visible %}
+                        <select name="visibility" id="visibility">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    {% else %}
+                        <select name="visibility" id="visibility">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    {% endif %}
+                    <button type="submit">Save</button>
+                </form>
+            </section>
+            <section id="security" class="section">
+                <h2>Security Settings</h2>
+                <div style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+
+                    <h2 style="margin-bottom: 20px; text-align: center;">Delete Account</h2>
+                  
+                    <button onclick="confirmDelete()" style="background-color: #ff4d4d; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; display: block; margin: 0 auto; margin-bottom: 20px;">Delete Account</button>
+                  
+                    <script>
+                      function confirmDelete() {
+                        if (confirm("Are you sure you want to delete your account?")) {
+                          window.location.href = "wfguwfuwfnfwvhuhsvsfsvfsvffxasqqdxj"; // Redirect to delete endpoint
+                        }
+                      }
+                    </script>
+                  
+                  </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(function (section) {
+                section.classList.remove('active');
+            });
+
+            // Deactivate all options
+            var options = document.querySelectorAll('.option');
+            options.forEach(function (option) {
+                option.classList.remove('active');
+            });
+
+            // Activate the selected section
+            var selectedSection = document.getElementById(sectionId);
+            selectedSection.classList.add('active');
+
+            // Activate the corresponding option
+            var selectedOption = document.querySelector('a[href="#' + sectionId + '"]').parentNode;
+            selectedOption.classList.add('active');
+        }
+
+        function goBackHome() {
+            // You can replace this with actual functionality to go back to the home page
+            window.location.href = "/";
+        }
+    </script>
+</body>
+
+</html>

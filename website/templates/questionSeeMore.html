@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+    <title>Question Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Light blue background */
+        }
+        .question-container {
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffffff; /* White question container */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .question h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #007bff; /* Blue question title */
+        }
+        .question p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .question-info {
+            color: #777; /* Gray color for username and date */
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .comment {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #e0f2f1; /* Light green comment background */
+            border-radius: 5px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .comment p {
+            margin-bottom: 5px;
+            color: #333; /* Dark green comment text */
+        }
+        .comment-info {
+            color: #777; /* Gray color for username and date */
+            font-size: 12px;
+        }
+        .comment-input form{
+            margin-top: 20px;
+            display: flex;
+        }
+        .comment-input form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .comment-input button {
+            background-color: #28a745; /* Dark green comment button */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .comment-input button:hover {
+            background-color: #218838; /* Darker shade of green on hover */
+        }
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .comment-count {
+            color: #555;
+        }
+        .back-button {
+            background-color: #007bff; /* Blue back button */
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 10px;
+        }
+        .back-button:hover {
+            background-color: #0056b3; /* Darker shade of blue on hover */
+        }
+
+        .message {
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="question-container">
+        <form action="questionBoard" method="post">
+            <input type="hidden" name="class_id" id="class_id" value="{{main_question.class_id}}">
+            <button class="back-button">Back</button>
+        </form>
+        
+        <div class="question-info">
+            <span>Posted by: {{main_question.posted_by.username}}</span> <!-- Replace "JohnDoe" with the actual username -->
+            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span>Posted on: {{main_question.formatted_timestamp}}</span> <!-- Replace "May 25, 2024" with the actual date -->
+        </div>
+        <h2>{{main_question.title}}</h2>
+        <p>{{main_question.content}}</p>
+
+        <div class="comment-input">
+        <form method="POST" action="questionSeeMore">
+            <input type="hidden" name="postAnswer" id="postAnswer">
+            <input type="hidden" name="question_id" id="question_id" value="{{main_question.id}}">
+            <input type="text" placeholder="Add a comment..." name="content" id="content">
+            <button type="submit">Add Comment</button>
+        </form>
+        </div>
+        <div class="post-footer">
+            <span class="comment-count">{{count}} Comments</span>
+        </div>
+        {% if count == 0%}
+            <div class="message">
+                <p>No Comments Yet &nbsp; <i class="far fa-meh"></i></p>
+            </div>
+        {% endif%}
+        <div class="comments">
+            {% for a in all_answers%}
+            {% if a.user_id == current_user.id%}
+                <div class="comment">
+                    <div class="comment-info">
+                        <span>Comment by: {{a.postedBy.username}}</span> <!-- Replace "JaneDoe" with the actual username -->
+                        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        <span>Posted on: {{a.formatted_timestamp}}</span> <!-- Replace "May 26, 2024" with the actual date -->
+                    </div>
+                    <p>{{a.content}}</p>
+                    <form action="questionSeeMore" method="post">
+                        
+                        <input type="hidden" name="delete" id="delete" value="{{a.id}}">
+                        <input type="hidden" name="question_id" id="question_id" value="{{a.question_id}}">
+                        <button class="delete-button">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="comment">
+                    <div class="comment-info">
+                        <span>Comment by: {{a.postedBy.username}}</span> <!-- Replace "JaneDoe" with the actual username -->
+                        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        <span>Posted on: {{a.formatted_timestamp}}</span> <!-- Replace "May 26, 2024" with the actual date -->
+                    </div>
+                    <p>{{a.content}}</p>
+                </div>
+            {% endif%}
+            {% endfor%}
+            <!-- Add more comments here -->
+        </div>
+    </div>
+    
+
+    <script>
+        // Your JavaScript code can go here if needed
+    </script>
+</body>
+</html>

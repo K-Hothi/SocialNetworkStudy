@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+    <title>Question Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f6f7f8; /* Light gray background */
+        }
+        .header {
+            background-color: #1e56b7; /* Light blue header */
+            color: #ffffff; /* Dark gray text */
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between; /* Align items horizontally */
+            align-items: center; /* Center items vertically */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            flex-wrap: wrap;
+        }
+        .header .back-btn {
+            background-color: #ffffff; /* White background */
+            color: #0079d3; /* Reddit blue text */
+            border: 2px solid #0079d3; /* Reddit blue border */
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .header .back-btn:hover {
+            background-color: #0079d3; /* Reddit blue */
+            color: #ffffff; /* White text on hover */
+        }
+        .tabs {
+            background-color: #ffffff; /* White background for tabs */
+            color: #1c1c1c; /* Dark gray text */
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        .tab-btn {
+            background-color: transparent;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-btn:hover {
+            background-color: #f0f0f0; /* Light gray hover */
+        }
+        .tab-btn.active {
+            background-color: #0079d3; /* Reddit blue */
+            color: #ffffff; /* White text */
+            border-radius: 5px;
+        }
+        .question {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            background-color: #ffffff; /* White background for questions */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        .question h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #1c1c1c; /* Dark gray text */
+        }
+        .question p {
+            margin-bottom: 10px;
+            color: #555555; /* Medium gray text */
+        }
+        .question-link {
+            text-decoration: none;
+            color: #1c1c1c; /* Dark gray text */
+        }
+        .question-link:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        .view-more-btn {
+            background-color: #0079d3; /* Reddit blue */
+            color: #ffffff; /* White text */
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .view-more-btn:hover {
+            background-color: #005ea6; /* Darker blue on hover */
+        }
+        .askhover{
+            background-color: black;
+            padding: 10px 20px; 
+            font-size: 15px; 
+            border: 1px black solid; 
+            color: white; 
+            border-radius: 5px; 
+            cursor: pointer;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .askhover:hover{
+            background-color: white;
+            color: black; 
+    
+        }
+
+        .back-button{
+            padding: 10px 20px; 
+            font-size: 15px; 
+            background-color: #45aa49; 
+            color: white; 
+            border: 1px black solid; 
+            border-radius: 5px; 
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .back-button:hover{
+            background-color: #347536; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <form action="/" method="get">
+            <button class="back-button">
+                Back
+            </button>
+        </form>
+        <h1>{{main_class.name}} Question Forum</h1>
+        <form action="askQuestion" method="get">
+            <input type="hidden" name="class_id" id="class_id" value="{{main_class.id}}">
+            <input type="hidden" name="fqb" id="fqb">
+            <button class='askhover'>Ask Question</button>
+          </form>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('allQuestions')">All Questions</button>
+        <button class="tab-btn" onclick="openTab('myQuestions')">My Questions</button>
+    </div>
+
+    <div id="allQuestions" class="tab-content active">
+        {% for question in all_questions %}
+        <div class="question">
+            <p>Posted by {{question.user.username}} | Posted on {{question.formatted_timestamp}}</p>
+            <h2><a href="#" class="question-link">{{question.title}}</a></h2>
+            <p>{{question.content}}</p>
+            
+            <form action="questionSeeMore" method="post">
+                <input type="hidden" name="question_id" id="question_id" value="{{question.id}}">
+                <button class="view-more-btn"><i class="fas fa-plus-circle"></i> View More</button>
+
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div id="myQuestions" class="tab-content" style="display: none;">
+        {% for question in my_questions%}
+        <div class="question">
+            <h2><a href="#" class="question-link">{{question.title}}</a></h2>
+            <p>{{question.content}}</p>
+            <p>Posted by {{question.user.username}} on {{question.formatted_timestamp}}</p>
+            <form action="questionSeeMore" method="post">
+                <input type="hidden" name="question_id" id="question_id" value="{{question.id}}">
+                <button class="view-more-btn">View More</button>
+            </form>
+            <form action="questionBoard" method="post">
+                <input type="hidden" name="class_id" id="class_id" value="{{main_class.id}}">
+                <input type="hidden" name="delete_question" id="delete_question">
+                <input type="hidden" name="question_id" id="question_id" value="{{question.id}}">
+                <button style="padding: 8px 12px; margin-top: 5px; background-color: #dc3545; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+            
+        </div>
+        
+        {% endfor %}
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            var i, tabContent, tabBtns;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].style.display = "none";
+            }
+            tabBtns = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].className = tabBtns[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active";
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

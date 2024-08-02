@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            
+            background: linear-gradient(to bottom right, #ffffff, #e7fdff);
+
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            
+        }
+
+        .sidebar {
+            background-color: #2875fb;
+            color: #fff;
+            width: 200px;
+            height: calc(100vh + 200px);
+            padding-top: 20px;
+            transition: width 0.3s ease; /* Added transition for smooth animation */
+            overflow: hidden; /* Hide overflow content when collapsed */
+        }
+
+        .sidebar.collapsed {
+            width: 60px; /* Collapsed width */
+        }
+
+        .user-info {
+            padding: 10px;
+            text-align: center; /* Center align user info */
+            color: rgb(255, 255, 255);
+            text-align: left;
+        }
+
+        .user-info strong {
+            color: #ffffff;
+            font-size: 25px;
+        }
+
+        .user-info span {
+            font-size: 20px;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px; /* Add margin to separate user info and menu */
+            
+        }
+
+        .menu li {
+            margin-bottom: 30px;
+        }
+
+        .menu li a {
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+
+        .menu li a:hover{
+            background-color: #155ab5;
+        }
+
+        .menu li div {
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .menu li a.active {
+            background-color: #3246a0;
+            border-radius: 20px;
+            font-weight: bolder;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #ffffff;
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .topbar form {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .topbar form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .topbar form button {
+            padding: 10px 20px;
+            background-color: rgb(0, 160, 0);
+            color: white;
+            border:#000000 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .topbar form button:hover {
+            background-color: #155ab5;
+        }
+
+        .content {
+            background-color: #f9f9f9;
+            padding: 0px;
+            margin: 4px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #333;
+            width:auto;
+            height: 80vh;
+        }
+
+        .content h1 {
+            padding-left: 20px;
+            padding-top: 20px;
+
+            
+        }
+
+        .content p {
+            margin-bottom: 0;
+            
+        }
+
+        .educationLogo{
+            display: none;
+            color: #ffffff;
+        }
+
+        @media screen and (max-width: 600px) {
+            .content h1 {
+            margin-right: 10px;
+            margin-top: 40px;
+            }
+
+            .menu li div {display: none}
+            .sidebar {
+                width: 60px; /* Keep sidebar collapsed on small screens */
+                
+            }
+
+            .menu li a span {
+                display: none; /* Hide menu text on collapsed sidebar */
+            }
+
+            .menu li a.active {
+                
+                border-radius: 20px;
+            }
+
+            .menu li a:not(.active):hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            .user-info {
+                padding: 10px;
+                text-align: center; /* Center align user info */
+                color: black;
+            }
+
+            .user-info strong {
+                color: #074dff;
+                font-size: 20px;
+                display: none;
+            }
+
+            .user-info span {
+                display: none;
+            }
+
+            .educationLogo{
+                display: block;
+                font-size: 24px;
+                margin-right: 10px;
+            }
+
+            .shortcutWheel{
+                display: none;
+            }
+        }
+        @media screen and (max-width: 500px) {
+
+            .shortcutWheel{
+                display: none;
+            }
+
+            .deleteOnSmall{
+                display: none;
+
+            }
+
+            .content h1 {
+            margin-right: 10px;
+            margin-top: 80px;
+            }
+
+            .menu li div {display: none}
+    .container {
+        flex-direction: column;
+         /* Change flex-direction to column */
+    }
+
+    .sidebar {
+        width: 100vw; /* Keep sidebar collapsed on small screens */
+        height: fit-content;
+        position: absolute;
+        
+    }
+
+    .menu {
+        display: flex; /* Change display to flex */
+        flex-direction: row; /* Align menu items in a row */
+        justify-content: space-around; /* Spread items evenly along the row */
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .menu li {
+        margin-bottom: 0; /* Remove margin bottom */
+    }
+
+    .menu li a {
+        padding: 10px; /* Adjust padding */
+        text-align: center; /* Center align text */
+    }
+
+    .menu li a span {
+        display: none; /* Hide menu text */
+    }
+
+    .menu li a.active {
+        
+        border-radius: 20px;
+    }
+
+    .menu li a:not(.active):hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .educationLogo {
+        display: none;
+    }
+
+    .topbar {
+            position: relative;
+            margin-bottom: 5px;
+        }
+}
+
+@media screen and (max-width: 1000px) {
+
+    .shortcutWheel{
+        display: none;
+    }
+}
+
+.shortcutWheel{
+    text-align: center; 
+    margin-top: 20px; 
+}
+
+.addClassShortcut{
+    padding: 12px 24px; 
+    margin: 0 10px;
+     font-size: 18px; 
+     cursor: pointer; 
+     border: 1px #24ab41 solid; 
+     border-radius: 10px;
+    background-color: #24ab41; 
+    color: white;
+    transition: background-color 0.3s ease; 
+}
+
+.addClassShortcut:hover{
+    background-color: #ffffff; 
+    color: rgb(0, 0, 0);
+}
+
+.findFriendShortcut{
+    padding: 12px 24px; 
+    margin: 0 10px;
+     font-size: 18px; 
+     cursor: pointer; 
+     border: 1px black solid; 
+     border-radius: 10px;
+    background-color: #000000; 
+    color: white;
+    transition: background-color 0.3s ease; 
+}
+
+.findFriendShortcut:hover{
+    background-color: white; 
+    color: black;
+}
+
+.askQuestionShortcut{
+    padding: 12px 24px; 
+    margin: 0 10px;
+     font-size: 18px; 
+     cursor: pointer; 
+     border: 1px #235ebd solid; 
+     border-radius: 10px;
+    background-color: #235ebd; 
+    color: white;
+    transition: background-color 0.3s ease; 
+
+}
+
+.askQuestionShortcut:hover{
+    background-color: #ffffff; 
+    color: rgb(0, 0, 0);
+
+}
+
+.uploadShortcut{
+    padding: 12px 24px; 
+    margin: 0 10px;
+     font-size: 18px; 
+     cursor: pointer; 
+     border: 1px #235ebd solid; 
+     border-radius: 10px;
+    background-color: #235ebd; 
+    color: white;
+    transition: background-color 0.3s ease; 
+
+}
+
+
+.uploadShortcut:hover{
+    background-color: #ffffff; 
+    color: rgb(0, 0, 0);
+
+}
+
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages%}
+            {% if category == 'error' %}
+                <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f44336; color: white; padding: 10px; text-align: center;" id="error-message">
+                    {{message}}
+                </div>
+            {% else %}
+                <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #00a803; color: white; padding: 10px; text-align: center;" id="error-message">
+                    {{message}}
+                </div>
+            {% endif %}
+        {% endfor%}
+    {% endif %}
+{% endwith %}
+    <div style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #2e2e2e; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer; z-index: 9999;">
+        <a href="/allUsers" class="fas fa-search" style="color: white; font-size: 24px; text-decoration: none;"></a>
+    </div>
+
+
+    
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="user-info">
+                <span>Welcome, <strong>{{user.username.title()}}</strong></span>
+                <i class="fas fa-graduation-cap education-icon educationLogo"></i>
+            </div>
+            <ul class="menu">
+                <li><a href="#" class="active" onclick="loadContent(this, 'home')"><i class="fas fa-home menu-icon"></i><span>Home</span></a></li>
+                <li><a href="#" onclick="loadContent(this, 'upload')"><i class="fas fa-upload menu-icon"></i><span>Upload</span></a></li>
+                <li><a href="#" onclick="loadContent(this, 'popular')"><i class="fas fa-fire menu-icon"></i><span>Popular</span></a></li>
+                <li><a href="#" onclick="loadContent(this, 'following')"><i class="fas fa-users menu-icon"></i><span>Following</span></a></li>
+                <li><a href="profile" onclick="loadContent(this, 'profile')"><i class="fas fa-user menu-icon"></i><span>Profile</span></a></li>
+                <li><a href="settings" onclick="loadContent(this, 'settings')"><i class="fas fa-cog menu-icon"></i><span>Settings</span></a></li>
+                <li><hr style="padding: 0px 3px;" class="deleteOnSmall"></li>
+                <li><a href="#" onclick="togglePopup()"><i class="fas fa-coins menu-icon deleteOnSmall"></i><span>Enjoying the site?</span></a></li>
+              <!-- Inside the <ul class="menu"> element -->
+                <li class="deleteOnSmall"><a href="reviews" onclick="loadContent(this, 'review')"><i style='color: yellow' class="fas fa-star menu-icon"></i><span>Leave a Review</span></a></li>
+
+            </ul>
+            <div id="popup-content" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #ffffff; color: #000000; padding: 20px; border: 1px solid #000000; border-radius: 8px; box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.5); z-index: 9999; max-width: 300px;">
+                <span class="close-btn" onclick="togglePopup()" style="position: absolute; top: 5px; right: 5px; cursor: pointer; font-size: 20px;">&times;</span>
+                <p style="margin-top: 20px; margin-bottom: 15px; text-align: center;">If you're enjoying the site, consider supporting us with a donation!</p>
+                <button onclick="redirectToDonation()" style="background-color: #1b97c4; color: #ffffff; padding: 12px 25px; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; width: 100%; box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.3);">Donate Now</button>
+            </div>
+            
+        </div>
+        <div class="main">
+            <div class="topbar">
+                
+                <div class="banner deleteOnSmall" style="text-align: center;">
+                    <h2>Welcome to {{WebsiteName}}</h2>
+                    <p>Quote of the day - <i>"Success is not final, failure is not fatal: It is the courage to continue that counts."</i></p>
+                </div>
+            
+                <!-- Search bar -->
+                <form action="/searchClass" method="post">
+                    <input name="searchName" type="text" placeholder="Search For Classes...">
+                    <button type="submit">Go</button>
+                </form>
+            </div>
+            <div class="shortcutWheel">
+
+
+                    <!-- Placeholder button -->
+                <button id="somethingElseButton" class="uploadShortcut" onclick="loadContent(this, 'upload')">
+                    <i class="fas fa-upload"></i> Post Note
+                </button>
+
+                <!-- Button for finding a friend -->
+                <button id="findFriendButton" class="findFriendShortcut" onclick="window.location.href='allUsers'">
+                <i class="fas fa-user-friends"></i> Find Friend
+                </button>
+            
+                <!-- Button for asking a question -->
+                <button id="askQuestionButton" class="askQuestionShortcut" onclick="window.location.href='askQuestion'">
+                    <i class="fas fa-question-circle"></i> Ask Question
+                </button>
+
+              <!-- Button for creating a class -->
+              <button id="createClassButton" class="addClassShortcut" onclick="window.location.href='addClass'">
+                <i class="fas fa-plus-circle"></i> Create Class
+            </button>
+            
+            </div>
+            
+            
+            <div class="content" id="mainContent">
+                <!-- Main content will be dynamically loaded here -->
+                <h1>Welcome to the {{WebsiteName}}</h1>
+                <p>This is the home page content.</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <script>
+function loadContent(element, page) {
+    var contentContainer = document.getElementById('mainContent');
+    var pageTitle;
+    var pageContent;
+
+    // Remove 'active' class from all menu items
+    var menuItems = document.querySelectorAll('.menu li a');
+    menuItems.forEach(function(item) {
+        item.classList.remove('active');
+    });
+
+    // Add 'active' class to the clicked menu item
+    element.classList.add('active');
+
+    switch (page) {
+        case 'home':
+            pageTitle = `
+            All Classes
+            <div style="text-align: left;">
+                <p style="font-family: Arial, sans-serif; font-size: 16px;">Don't see your class? Add it in one <a href="addClass" style="text-decoration: none; color: #007bff;">click</a></p>
+            </div>`
+
+
+            pageContent = `
+            <div style="overflow-y: scroll; height: 70vh; ">
+                {% for c in classes %}
+                <div style="border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); position: relative;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin-bottom: 10px; color: black;"><a href="#" style="text-decoration: none; color: inherit;">{{c.name}}</a></h2>
+        <div>
+            {% if c in followedClassesMain %}
+                <form method='post' action='follow' style="display: inline-block;">
+                    <input name="classid" id="classid" value="{{c.id}}" style="display: none">
+                    <button type='submit' id='follow' style="padding: 5px 10px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; text-decoration: none;">Unfollow</button>
+                </form>
+            {% else %}
+                <form method='post' action='follow' style="display: inline-block;">
+                    <input name="classid" id="classid" value="{{c.id}}" style="display: none">
+                    <button type='submit' id='follow' style="padding: 5px 10px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; text-decoration: none;">Follow</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <p style="font-size: 16px; margin-bottom: 15px; color: grey;">{{c.description}}</p>
+    <div>
+        <form method="post" action="seeMore" style="display: inline-block;">
+            <input type="hidden" name="classn" id="classn" value="{{c.name}}">
+            <button type="submit" style="margin-top: 10px; padding: 10px 40px; background-color: green; color: white; border: none; border-radius: 1px; cursor: pointer; font-size: 16px;">See More</button>
+        </form>
+    </div>
+    <div style="position: absolute; bottom: 10px; right: 10px;">
+        <button onclick="openSharePopup('{{c.name}}')" style="background: none; border: none; cursor: pointer;"><i class="fas fa-share-alt" style="font-size: 32px; color: grey;"></i></button>
+        <div id="sharePopup{{c.name}}" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 20px; z-index: 9999;">
+            <h3 style="margin-bottom: 15px;">Share Options</h3>
+            <ul style="list-style-type: none; padding: 0;">
+                <li style="margin-bottom: 10px;"><button id="copyButtonForShare" onclick="copyPostLink('https://thestudyresource.pythonanywhere.com')" style="background: none; border: none; cursor: pointer;"><i class="fas fa-copy" style="margin-right: 10px; font-size: 24px;"></i>Copy Post Link</button></li>
+                <li style="margin-bottom: 10px;"><a href="https://www.facebook.com/sharer.php?u=https://https://thestudyresource.pythonanywhere.com" target="_blank" style="text-decoration: none; color: inherit;"><i class="fab fa-facebook-square" style="margin-right: 10px; font-size: 24px;"></i>Share on Facebook</a></li>
+                <li style="margin-bottom: 10px;">
+    <a href="#" onclick="shareOnWhatsApp('{{c.name}}');" style="text-decoration: none; color: inherit;">
+        <i class="fab fa-whatsapp" style="margin-right: 10px; font-size: 24px;"></i>Share on WhatsApp
+    </a>
+</li>
+
+                <li style="margin-bottom: 10px;">
+                    <a href="mailto:?subject=Check%20out%20this%20class%20on%20The%20Study%20Resource&body=Hi,%0A%0ACheck%20out%20this%20class%20on%20The%20Study%20Resource:%0A%0AName: %20{{c.name}}%0AWebsite:%20https://thestudyresource.pythonanywhere.com%0A%0ANot%20a%20member?%20Sign%20up%20here:%20https://thestudyresource.pythonanywhere.com/createAccount" target="_blank" style="text-decoration: none; color: inherit;">
+
+        <i class="fas fa-envelope" style="margin-right: 10px; font-size: 24px;"></i>Share via Email
+    </a>
+</li>
+
+            </ul>
+            <button onclick="closeSharePopup('{{c.name}}')" style="padding: 8px 20px; background-color: #ccc; border: none; border-radius: 8px; cursor: pointer;">Close</button>
+        </div>
+    </div>
+</div>
+
+
+        {% endfor %}
+    </div>`;
+            break;
+        case 'upload':
+            pageTitle = '   <h2 style="margin-left: 20px;">Upload a resource</h2>';
+            // Dynamically generate the upload form
+            pageContent = `    
+            <div style="max-width: 100%; padding: 20px; box-sizing: border-box; font-family: Arial, sans-serif;">
+
+        <form action="#" method="post" enctype="multipart/form-data">
+    <div style="margin-bottom: 20px;">
+        <label for="title" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 18px;">Title:</label>
+        <input type="text" placeholder="ex. Practice Test 2018" name="title" id="title" style="width: 80%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;" required>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label for="class" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 18px;">Post to:</label>
+        <select name="class" id="class" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;" required>
+            {% for c in classesForward %}
+            <option value="{{c.name}}">{{c.name}}</option>
+            {% endfor %}
+            <!-- Add more options as needed -->
+        </select>
+        <p style="color: grey"><i class="fas fa-question-circle"></i>&nbsp;Make sure to select the right class</p>
+
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label for="fileType" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 18px;">File Type:</label>
+        <select name="fileType" id="fileType" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;" required>
+            <option value="notes">Notes</option>
+            <option value="q-cards">Q-Cards</option>
+            <option value="practice-test">Practice Test</option>
+            <option value="other">Other</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <label for="files" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 18px;">Upload Files:</label>
+        <input type="file" name="files" id="files" enctype="multipart/form-data" style="width: 80%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; font-size: 16px;" required>
+        <p style="color: grey;"><i class="fas fa-lightbulb"></i>&nbsp;Select only 1 file, for multiple files zip them first</p>
+    </div>
+    <div>
+        <button type="submit" style="padding: 12px 24px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; width: 100%;">
+            Upload <i class="fas fa-upload" style="margin-left: 5px;"></i>
+        </button>
+       
+    </div>
+    <hr>
+</form>
+<div>
+        <button onclick="location.href = '/addClass'" style="padding: 12px 24px; background-color: rgb(0, 190, 0); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; width: 100%;">
+            or add a class <i class="fas fa-plus" style="margin-left: 5px;"></i>
+        </button>
+    </div>
+
+    </div>`;
+            break;
+        case 'popular':
+            pageTitle = '<p>Most Followed</p>';
+            pageContent = `
+            <div style="overflow-y: scroll; height: 70vh; ">
+                {% for c in classesPopular %}
+                <div style="border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="margin-bottom: 10px; color: black;"><a href="#" style="text-decoration: none; color: inherit;">{{c.name}}</a></h2>
+        <p style="font-size: 16px; margin-bottom: 15px; color:grey;">{{c.description}}</p>
+        <div style="display: inline-block;">
+            {% if c in followedClassesMain %}
+    <form method='post' action='follow' style="display: inline-block;">
+        <input name="classid" id="classid" value="{{c.id}}" style="display: none">
+        <button type='submit' id='follow' style="padding: 10px 40px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">Unfollow</button>
+    </form>
+    {% else %}
+    <form method='post' action='follow' style="display: inline-block;">
+        <input name="classid" id="classid" value="{{c.id}}" style="display: none">
+        <button type='submit' id='follow' style="padding: 10px 40px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">Follow</button>
+    </form>
+    {% endif %}
+
+    <form method='post' action='seeMore' style="display: inline-block;">
+        <input name="classn" id="classn" value="{{c.name}}" style="display: none">
+        <button type='submit' style="margin-top: 10px; padding: 10px 40px; background-color: rgb(0, 190, 0); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">See More</button>
+    </form>
+</div>
+
+        </div>
+        {% endfor %}
+    </div>`;
+            
+            break;
+        case 'following':
+            pageTitle = 'Following';
+            pageContent =`<div>
+    <div style="overflow: hidden; border-bottom: 2px solid #1c6ae7; background-color: #f1f1f1; display: flex; justify-content: center;">
+        <button class="tablinks" onclick="openTab(event, 'classes')" style="background-color: #f1f1f1; color: black; border: none; outline: none; cursor: pointer; padding: 14px 20px; transition: 0.3s; font-size: 20px; border-top-left-radius: 5px; border-top-right-radius: 5px; margin-right: -2px;">Classes</button>
+        <button class="tablinks" onclick="openTab(event, 'friends')" style="background-color: #f1f1f1; color: black; border: none; outline: none; cursor: pointer; padding: 14px 20px; transition: 0.3s; font-size: 20px; border-top-left-radius: 5px; border-top-right-radius: 5px; margin-right: -2px;">Friends</button>
+    </div>
+
+    <div id="classes" class="tabcontent" style="display: block;">
+        <div style="overflow-y: scroll; height: 70vh; ">
+            {% for f in followedClassesMain %}
+            <div style="border: 1px solid #ccc; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <h2 style="margin-bottom: 10px; color: black;">
+                    <a href="#" style="text-decoration: none; color: inherit;">{{f.name}}</a>
+                </h2>
+                <p style="font-size: 16px; margin-bottom: 15px; color:grey;">{{f.description}}</p>
+                <div style="display: inline-block;">
+                    {% if f in followedClassesMain %}
+                    <form method='post' action='follow' style="display: inline-block;">
+                        <input name="classid" id="classid" value="{{f.id}}" style="display: none">
+                        <button type='submit' id='follow' style="padding: 10px 40px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">Unfollow</button>
+                    </form>
+                    {% else %}
+                    <form method='post' action='follow' style="display: inline-block;">
+                        <input name="classid" id="classid" value="{{c.id}}" style="display: none">
+                        <button type='submit' id='follow' style="padding: 10px 40px; background-color: #1c6ae7; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">Follow</button>
+                    </form>
+                    {% endif %}
+
+                    <form method='post' action='seeMore' style="display: inline-block;">
+                        <input name="classn" id="classn" value="{{f.name}}" style="display: none">
+                        <button type='submit' style="margin-top: 10px; padding: 10px 40px; background-color: rgb(0, 190, 0); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">See More</button>
+                    </form>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="friends" class="tabcontent" style="display: none;">
+        {% for user in followedFriends %}
+        <div style="background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc; margin-bottom: 10px;">
+                    <h2 style="color: #1a237e; margin: 0;">{{user.username}}</h2>
+                    <p style="color: #333; margin: 5px 0;">Email: {{user.email}}</p>
+                </div>
+                <form action="profileOther" method="post">
+                    <input type="hidden" name="user_id_other" id="user_id_other" value="{{user.id}}">
+                    <button type="submit" style="font-size: 14px; background-color: #1565c0; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; transition: background-color 0.3s ease;">Profile</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+`
+            break;
+        case 'profile':
+            pageTitle = 'Profile';
+            pageContent = 'This is the profile page content.';
+            break;
+        case 'settings':
+            pageTitle = 'Settings';
+            pageContent = 'This is the settings page content.';
+            break;
+        default:
+            pageTitle = 'Error';
+            pageContent = 'Page not found.';
+            break;
+    }
+    
+    contentContainer.innerHTML = '<h1>' + pageTitle + '</h1><div class="content">' + pageContent +
+        '</div>';
+}
+
+
+    // Toggle sidebar collapse/expand
+    function toggleSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('collapsed');
+    }
+    </script>
+
+<script>
+    // Call loadContent() function to load home page content when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        loadContent(document.querySelector('.menu li a.active'), 'home');
+    });
+</script><script>
+    // JavaScript to toggle the popup content
+    function togglePopup() {
+      var popupContent = document.getElementById("popup-content");
+      popupContent.style.display = popupContent.style.display === "block" ? "none" : "block";
+    }
+  
+    // JavaScript to redirect to donation page
+    function redirectToDonation() {
+      // Replace 'your-donation-page-url' with the actual URL of your donation page
+      window.open('https://paypal.me/soreway?country.x=CA&locale.x=en_US/');
+    }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the button element
+        var copyButton = document.getElementById('copyButtonForShare');
+    
+        // Add click event listener
+        copyButton.addEventListener('click', function() {
+            // Change the text to "Copied"
+            copyButton.textContent = "Copied";
+        });
+    });
+    </script>
+  <script>
+    function shareOnWhatsApp(className) {
+        var message = encodeURIComponent('Check out this class on The Study Resource:\n\nName: ' + className + '\nWebsite: https://thestudyresource.pythonanywhere.com\n\nNot a member? Sign up here: https://thestudyresource.pythonanywhere.com/createAccount');
+        var whatsappUrl = 'https://wa.me/?text=' + message;
+        window.open(whatsappUrl, '_blank');
+    }
+</script>
+
+  <script>
+    function openSharePopup(className) {
+        var sharePopup = document.getElementById("sharePopup" + className);
+        sharePopup.style.display = "block";
+    }
+
+    function closeSharePopup(className) {
+        var sharePopup = document.getElementById("sharePopup" + className);
+        sharePopup.style.display = "none";
+    }
+
+    function copyPostLink(postName) {
+        var postLink = postName;
+        navigator.clipboard.writeText("https://thestudyresource.pythonanywhere.com")
+            
+    }
+</script>
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+
+</body>
+</html>

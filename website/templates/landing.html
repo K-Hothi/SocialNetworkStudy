@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{WebsiteName}}</title>
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            text-align: center;
+            font-size: 24px; /* Adjusted font size for smaller screens */
+        }
+        header button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px; /* Adjusted font size for smaller screens */
+            border-radius: 5px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        header #create-account {
+            background-color: #4267B2; /* Facebook blue */
+            background-image: linear-gradient(to bottom, #4267B2, #2a4887);
+        }
+        header #login {
+            background-color: #42B72A; /* Facebook green */
+            background-image: linear-gradient(to bottom, #42B72A, #3a9b1d);
+            margin-right: 10px;
+        }
+        header #join-team {
+            background-color: #333; /* Dark gray */
+            background-image: linear-gradient(to bottom, #333, #222);
+        }
+        .container {
+            max-width: 1200px; /* Expanded max-width for fuller look */
+            margin: 50px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .description-container {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .description {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        .buttons-container {
+            margin-top: 20px;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .button-row button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px; /* Adjusted font size for smaller screens */
+            border-radius: 5px;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .button-row #create-account {
+            background-color: #4267B2; /* Facebook blue */
+            background-image: linear-gradient(to bottom, #4267B2, #2a4887);
+        }
+        .button-row #login {
+            background-color: #42B72A; /* Facebook green */
+            background-image: linear-gradient(to bottom, #42B72A, #3a9b1d);
+            margin-right: 10px;
+        }
+        .button-row #join-team {
+            background-color: #333; /* Dark gray */
+            background-image: linear-gradient(to bottom, #333, #222);
+        }
+        .button-row button {
+            margin: 0 10px;
+        }
+        .section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .section-column {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .section-column h2 {
+            margin-top: 0;
+        }
+
+        /* Media query for smaller screens */
+        @media screen and (max-width: 600px) {
+            header {
+                flex-direction: column;
+            }
+            header h1 {
+                margin-top: 10px;
+                text-align: center;
+                 /* Adjusted font size for smaller screens */
+            }
+            header div {
+                margin-top: 10px;
+                text-align: center;
+            }
+            header button {
+                margin-top: 10px;
+                font-size: 14px; /* Adjusted font size for smaller screens */
+            }
+            .container {
+                padding: 0 10px;
+            }
+            .section {
+                flex-direction: column;
+            }
+            .section-column {
+                margin-top: 20px;
+            }
+
+            .hideWhenSmall{
+                display:none;
+            }
+
+            .button-row button {
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px; /* Adjusted font size for smaller screens */
+            border-radius: 3px;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            }
+        }
+        ul.social-media {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        ul.social-media li {
+            margin: 0 10px;
+        }
+        ul.social-media li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            color: #fff;
+            font-size: 20px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+        ul.social-media li a:hover {
+            background-color: #333;
+        }
+        ul.social-media li a.facebook {
+            background-color: #3b5998; /* Facebook blue */
+        }
+        ul.social-media li a.youtube {
+            background-color: #ff0000; /* YouTube red */
+        }
+        ul.social-media li a.github {
+            background-color: #333; /* GitHub black */
+        }
+        ul.social-media li a.instagram {
+            background-color: #c32aa3; /* Instagram purple */
+        }
+        ul.social-media li a:hover {
+            background-color: #333;
+        }
+
+        /* Popup Form Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .what-you-can-do {
+            margin-top: 50px;
+            text-align: left;
+        }
+        .what-you-can-do h2 {
+            color: #207dc4; /* Adjusted color to match existing styles */
+            margin-top: 0;
+        }
+        .what-you-can-do ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.what-you-can-do li {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.what-you-can-do li i {
+    margin-right: 10px;
+    font-size: 24px;
+    color: #333; /* Adjusted color to match existing styles */
+}
+        .what-you-can-do li p {
+            font-size: 18px;
+            margin: 0;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <button class='' id="create-account" onclick="window.location.href='createAccount'">Create Account</button>
+            <button class='' id="login" onclick="window.location.href='login'">Login</button>
+        </div>
+
+            <h1 style="font-size:xx-large;">[ {{WebsiteName}} ]</h1>
+
+
+        <button id="join-team" onclick="window.location.href='mailto:kharanhothi7@gmail.com?subject=Joining%20the%20Team'">Join the Team</button>
+
+    </header>
+    <div class="container">
+        <div class="description-container">
+            <h1>The Project</h1>
+            <p class="description">The Study Resource is set to become the largest repository for student notes, practice tests, and flashcards between the SFU and UBC campus. Members can look at other students notes and upload their own to make the repository larger. <br><br> <i style="margin-top: 20px; font-size: 20px;"><b>{{count}} students have joined so far</b></i></p>
+            <div class="buttons-container">
+                <div class="button-row">
+                    <button class='smallText' id="create-account" onclick="window.location.href='createAccount'">Create Account</button>
+                    <button class='smallText' id="login" onclick="window.location.href='login'">Login</button>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap;justify-content: space-around;">
+                <section class="what-you-can-do">
+                    <div class="container">
+                        <h2>You can use The {{WebsiteName}} to:</h2>
+                        <ul>
+                            <li>
+                                <i class="fa fa-upload" aria-hidden="true"></i>
+                                <p>Upload your own study notes, practice tests, and flashcards for safe keeping.</p>
+                            </li>
+                            <li>
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                <p>View study materials shared by other students at different schools.</p>
+                            </li>
+                            <li>
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                                <p>Download study resources for offline use.</p>
+                            </li>
+                            <li>
+                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                <p>Ask questions for any class and get quick answers.</p>
+                            </li>
+                            <li>
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <p>Make friends with students studying in the same class.</p>
+                            </li>
+                            <!-- Add more list items as needed -->
+                        </ul>
+                    </div>
+                </section>
+
+                <div class="section-column" style="padding-top: 40px; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin-top: 20px; display: flex; justify-content: center; align-items: center; height: auto;">
+                    <h2 style="color: #000000; text-align: center; font-size: 34px;">Estimated to reach <br><span style="font-size: 80px; color:#4267B2;">20,000</span><br> <div style="color: rgb(0, 0, 0)">members by year's end</div></h2>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+        <div class="section">
+            <div class="section-column">
+                <div class="section">
+                    <div class="section-column" style="flex: 1; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div style="font-size: 34px; color: #000000; margin-top: 10px;">[ {{WebsiteName}} ]</div>
+                        <div style="font-size: 102px; font-weight: bold; color: #2b8113;">{{count}}</div>
+                        <div style="font-size: 34px; color: #165a8e; margin-top: 10px;">members have joined so far</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="section-column">
+                <div class="section-column" style="flex: 1; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <h2 style="margin-top: 0;">Contact Us</h2>
+                    <form style="text-align: left;">
+                        <label for="name" style="font-weight: bold;">Name:</label><br>
+                        <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;"><br>
+                        <label for="email" style="font-weight: bold;">Email:</label><br>
+                        <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;"><br>
+                        <label for="phone" style="font-weight: bold;">Phone Number (optional):</label><br>
+                        <input type="tel" id="phone" name="phone" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;"><br>
+                        <label for="reason" style="font-weight: bold;">Reason for Contact:</label><br>
+                        <textarea id="reason" name="reason" rows="4" cols="50" required style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;"></textarea><br>
+                        <button type="submit" style="background-color: #4CAF50; color: white; padding: 14px 20px; margin: 8px 0; border: 0.5px black solid; border-radius: 8px; cursor: pointer; width: 100%; font-size: medium;;">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="section-column">
+            <div class="section-column" style="flex: 1; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <h1 style="margin-top: 0; color: #207dc4;">Campuses we've connected to</h1>
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div style="margin-bottom: 20px;">
+                        <img src="../static/Logos/sfuLogo.png" alt="SFU Logo" style="width: 100px; height: auto; margin-bottom: 10px;">
+                        <p style="font-size: larger; margin: 0;">Simon Fraser University</p>
+                        <p style="margin: 0;">Home to innovative collaboration</p>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <img src="../static/Logos/ubcLogo.png" alt="UBC Logo" style="width: 100px; height: auto; margin-bottom: 10px;">
+                        <p style="font-size: larger; margin: 0;">University of British Columbia</p>
+                        <p style="margin: 0;">Fostering interdisciplinary connections</p>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <img src="../static/Logos/langaraLogo.png" alt="Langara Logo" style="width: 100px; height: auto; margin-bottom: 10px;">
+                        <p style="font-size: larger; margin: 0;">Langara College</p>
+                        <p style="margin: 0;">Building bridges for student success</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <section class="contributors">
+        <div class="container">
+            <h2>Contributors</h2>
+            <div class="contributor">
+                <p>Founder - Kharandeep Hothi</p>
+            </div>
+            <div class="contributor">
+                <p>CFO - Diljot Hans</p>
+                <p>Programmer - Alicia Lam</p>
+            </div>
+            <div class="contributor">
+                <button id="join-team" onclick="window.location.href='mailto:kharanhothi7@gmail.com?subject=Joining%20the%20Team'" style="padding: 10px 20px; border: none; cursor: pointer; font-size: 16px; border-radius: 5px; color: white; transition: all 0.3s ease; background-color: #333; background-image: linear-gradient(to bottom, #333, #222);">Join the Team</button>
+
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <ul class="social-media">
+            <li><a href="https://www.facebook.com/KharanHothi8/" class="facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+            <li><a href="https://www.youtube.com/@CodeWithKharan" class="youtube"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+            <li><a href="https://www.github.com/K-Hothi" class="github"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+            <li><a href="https://www.instagram.com/kharan_hothi/" class="instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+        </ul>
+    </div>
+
+    <!-- Popup Form -->
+    <div id="joinForm" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeForm()">&times;</span>
+            <h2>Join Our Team</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="reason">Why do you want to join?</label><br>
+                <textarea id="reason" name="reason" rows="4" cols="50" required></textarea><br><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to open and close the popup form
+        function openForm() {
+            document.getElementById("joinForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("joinForm").style.display = "none";
+        }
+    </script>
+</body>
+</html>

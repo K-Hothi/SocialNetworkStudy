@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members of The Study Resource</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5; /* Light blue-gray */
+        }
+
+        #header {
+    background-color: #1565c0; /* Dark blue */
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+
+        #header p {
+            margin: 0;
+            font-size: large;
+        }
+        #header button {
+            font-size: 15px;
+            background-color: #000000;
+        }
+
+        #user-list {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .user-profile {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .user-profile:hover{
+            background-color: #f9f9f9;
+        }
+
+        .user-info {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .user-info h2 {
+            color: #1a237e; /* Dark blue */
+            margin: 0;
+        }
+
+        .user-info p {
+            color: #333;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #1565c0; /* Dark blue */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background-color: #0d47a1; /* Darker blue on hover */
+        }
+
+        #user-count {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #invite-friends {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        @media screen and (max-width: 500px) {
+            .deleteOnSmall{
+                display: none;
+            }
+
+            #header{
+                justify-content: center;
+            }
+            #header button {
+            width: 80%;
+            font-size: 15px;
+        }
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #1c6ae7; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer; z-index: 9999;">
+        <a href="/" class="fas fa-graduation-cap" style="color: white; font-size: 24px; text-decoration: none;"></a>
+    </div>
+
+    <div id="header">
+        <p class="">Total Public Users: {{users_count}}</p>
+        <h2>{{title}}</h2>
+        <button onclick="openEmailPopup()">Invite Friends</button>
+    </div>
+
+    <div id="user-list">
+        <p style="color: #555; font-size: 16px;"><i class="fas fa-lightbulb"></i>&nbsp;
+            Only users with visibility settings turned on will be seen.
+            <span style="font-weight: bold;">Enable visibility settings</span>
+            <a href="settings" style="color: #007bff; text-decoration: none;">here</a>.
+        </p>
+        
+
+        {% for user in users_all%}
+            <div class="user-profile">
+                <div class="user-info">
+                    <h2>{{user.username.title()}}</h2>
+                    <p>Email: {{user.email}}</p>
+                    <p>Studying at: {{user.studying.title()}}</p>
+                </div>
+
+                <form action="profileOther" method="post">
+                    <input type="hidden" name="user_id_other" id="user_id_other" value="{{user.id}}">
+                    <button type="submit">View Profile</button>
+                </form>
+            </div>
+        {% endfor%}
+        <!-- Add more user profiles here -->
+    </div>
+</body>
+<script>
+    function openEmailPopup() {
+        var subject = encodeURIComponent("Join The Study Resource!");
+        var body = encodeURIComponent("Hi,\n\nYou've been invited to join The Study Resource! \n\nSign up here at https://thestudyresource.pythonanywhere.com.");
+        window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+    }
+</script>
+
+</html>

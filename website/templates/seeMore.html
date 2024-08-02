@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+
+  <style>
+    /* Style for the header */
+    header {
+      background-color: #FFFFFF;
+      color: #333333;
+      text-align: left;
+      padding: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /* Style for the class name */
+    .class-name {
+      font-size: 36px;
+      margin: 0;
+      color: #333333;
+    }
+
+    /* Style for the class description */
+    .class-description {
+      font-size: 18px;
+      margin: 5px 0;
+      color: #333333;
+    }
+
+    /* Style for the number of contributors */
+    .num-contributors {
+      font-size: 20px;
+      color: #333333;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Style for the number of contributors icon */
+    .num-contributors i {
+      margin-right: 5px;
+      color: #1E88E5;
+    }
+
+    /* Style for the home button */
+    .home-button {
+      background-color: #1E88E5;
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 20px;
+      font-size: 15px;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border-radius: 4px;
+    }
+
+    /* Style for the tabs */
+    .tab {
+      overflow: hidden;
+      border-bottom: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
+
+    /* Style for the buttons that open the tabs */
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 20px;
+      color: #333;
+    }
+
+    /* Change background color of the active tab */
+    .tab button.active {
+      background-color: #1E88E5;
+      color: #FFFFFF;
+    }
+
+    /* Style for the content inside the tabs */
+    .tabcontent {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }
+
+    .adjustName{
+        font-size: 24px;
+      }
+
+      .joinDis{
+        padding: 10px 20px;
+        font-size: 15px; 
+        
+      }
+
+    @media (max-width: 600px) {
+      .adjustName{
+        font-size: 20px;
+      }
+      .home-button {
+      
+        position: relative;
+        margin-bottom: 10px;
+      
+      }
+    }
+  </style>
+</head>
+<body onload="openTab(event, 'Notes')">
+
+  
+<header>
+  <div>
+    <h1 class="class-name"><i>{{mainClass.name}}</i></h1>
+    <p class="class-description">{{mainClass.description}}</p>
+    <p class="num-contributors"><i class="fas fa-book" style="color: brown"></i> {{sum}} contributors</p>
+    <p class="num-contributors"><i class="fas fa-users" style="color: rgb(0, 140, 255)"></i> {{followersCount}} Following</p>
+    <form action="questionBoard" method="post">
+      <input type="hidden" name="class_id" id="class_id" value="{{mainClass.id}}">
+      <button class="joinDis">
+        <i class="fas fa-comment"></i> Join Discussion
+    </button>
+    </form>
+
+    {% if mainClass in followedClassesMain %}
+    <p  style="color: rgb(60, 60, 60); font-size: medium;">Followed</p>
+    
+    {% else %}
+    <p  style="color: rgb(60, 60, 60); font-size: medium;">Not Following</p>
+
+    
+    {% endif %}
+  </div>
+  <button style="position: fixed; top: 20px; right: 20px; font-size: 15px; padding: 10px 20px; border: none; border-radius: 5px; background-color: #007bff; color: #fff; cursor: pointer; z-index: 9999;" onclick="window.location.href = '/';" return false;">
+    <i class="fas fa-arrow-left"></i> Back
+  </button>
+
+</header>
+
+<!-- Tabs -->
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'Notes')"><i class="fas fa-book"></i> Notes</button>
+  <button class="tablinks" onclick="openTab(event, 'PracticeTests')"><i class="fas fa-edit"></i> Practice Tests</button>
+  <button class="tablinks" onclick="openTab(event, 'QCards')"><i class="fas fa-question-circle"></i> Q Cards</button>
+  <button class="tablinks" onclick="openTab(event, 'Other')"><i class="fas fa-ellipsis-h"></i> Other</button>
+  <button class="tablinks" onclick="openTab(event, 'followersClass')"><i class="fas fa-users"></i> Followers</button>
+</div>
+
+<!-- Tab content -->
+<div id="Notes" class="tabcontent">
+  <h3>Notes</h3>
+  <div style="display: flex; flex-wrap: wrap; justify-content:center">
+  {% for note in mainClassNotes%}
+  <div style="position: relative; border: 1px; width: 40vw; flex: 1 1 auto; margin: 20px 10px; background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);">
+    <form id="shareForm" style="position: absolute; top: 10px; right: 10px;">
+        <input type="hidden" name="classn" value="{{ mainClass.name }}">
+        <input type="hidden" name="likedANote" value="{{ note.id }}">
+        <input type="hidden" id="recipientEmail" placeholder="Recipient's Email">
+        <button id="shareButton" style="background-color: transparent; border: none; cursor: pointer;">
+            <i class="fas fa-share" style="color: #007bff; font-size: 24px;"></i>
+        </button>
+    </form>
+    <div class='adjustName' style="margin-bottom: 20px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ note.name }}</div>
+    <p style="color: grey">filename: {{ note.fileName }}</p>
+    <div style="display: flex; justify-content: space-around;">
+        <a href="{{ note.fileName }}" id='viewNotesLink' target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 20px; flex: 1;">View Notes</a>
+        <a href="{{ note.fileName }}" style="text-decoration: none; color: rgb(105, 105, 105); font-size: 15px; display: flex; align-items: center;" download>
+            <span style="margin-right: 5px;">or download</span>
+            <i class="fas fa-download"></i>
+        </a>
+    </div>
+</div>
+
+<script>
+  document.getElementById('shareButton').addEventListener('click', function(event) {
+  event.preventDefault();
+  var recipientEmail = document.getElementById('recipientEmail').value;
+  var noteFileName = "{{ note.fileName }}";
+  
+  // Retrieve the anchor element
+  var viewNotesLink = document.getElementById('viewNotesLink');
+  
+  // Set href attribute and target attribute
+  viewNotesLink.setAttribute('href', noteFileName);
+  viewNotesLink.setAttribute('target', '_blank');
+  var subject = "I found this note on The Study Resource";
+  var body = "Hi,\n\nI thought you might find this note interesting:\n\n" + viewNotesLink + "\n\n Enjoy!\n\n\n\n\n\n Why join {{WebsiteName}}? https://thestudyresource.pythonanywhere.com/createAccount";
+  var mailtoLink = "mailto:" + recipientEmail + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  window.location.href = mailtoLink;
+});
+</script>
+
+
+
+  {% endfor %}
+  </div>
+  
+</div>
+
+<div id="PracticeTests" class="tabcontent">
+  <h3>Practice Tests</h3>
+  <div style="display: flex; flex-wrap: wrap; justify-content:center">
+  {% for test in mainClassTests%}
+  <div style="position: relative; border: 1px; width: 40vw; flex: 1 1 auto; margin: 20px 10px; background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);">
+    <form id="shareForm" style="position: absolute; top: 10px; right: 10px;">
+        <input type="hidden" name="classn" value="{{ mainClass.name }}">
+        <input type="hidden" name="likedATest" value="{{ test.id }}">
+        <input type="hidden" id="recipientEmail" placeholder="Recipient's Email">
+        <button id="shareButtonTest" style="background-color: transparent; border: none; cursor: pointer;">
+            <i class="fas fa-share" style="color: #007bff; font-size: 24px;"></i>
+        </button>
+    </form>
+    <div class='adjustName' style="margin-bottom: 20px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ test.name }}</div>
+    <p style="color: grey">filename: {{ test.fileName }}</p>
+    <div style="display: flex; justify-content: space-around;">
+        <a href="{{ test.fileName }}" id='viewNotesLinkTest' target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 24px; flex: 1;">View Test</a>
+        <a href="{{ test.fileName }}" style="text-decoration: none; color: rgb(105, 105, 105); font-size: 15px; display: flex; align-items: center;" download>
+            <span style="margin-right: 5px;">or download</span>
+            <i class="fas fa-download"></i>
+        </a>
+    </div>
+</div>
+
+<script>
+document.getElementById('shareButtonTest').addEventListener('click', function(event) {
+    event.preventDefault();
+    var recipientEmail = document.getElementById('recipientEmail').value;
+    var noteFileName = "{{ test.fileName }}"; // Replace with actual file name or URL
+      // Retrieve the anchor element
+    var viewNotesLink = document.getElementById('viewNotesLinkTest');
+    
+    // Set href attribute and target attribute
+    viewNotesLink.setAttribute('href', noteFileName);
+    viewNotesLink.setAttribute('target', '_blank');
+    var subject = "I found this practice test on The Study Resource";
+    var body = "Hi,\n\nI thought you might find this test interesting:\n\n" + viewNotesLink + "\n\nEnjoy!\n\n\n\n\n\n Why join {{WebsiteName}}? https://thestudyresource.pythonanywhere.com/createAccount";
+    var mailtoLink = "mailto:" + recipientEmail + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    window.location.href = mailtoLink;
+});
+</script>
+
+
+
+
+  {% endfor %}
+  </div>
+</div>
+
+<div id="QCards" class="tabcontent">
+  <h3>Q Cards</h3>
+  <div style="display: flex; flex-wrap: wrap; justify-content:center">
+  {% for card in mainClassCards %}
+  <div style="position: relative; border: 1px; width: 40vw; flex: 1 1 auto; margin: 20px 10px; background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);">
+    <form method = 'post' id="shareForm" style="position: absolute; top: 10px; right: 10px;">
+        <input type="hidden" name="classn" value="{{ mainClass.name }}">
+        <input type="hidden" name="likedANote" value="{{ card.id }}">
+        <input type="hidden" id="recipientEmail" placeholder="Recipient's Email">
+        <button id="shareButtonCard" style="background-color: transparent; border: none; cursor: pointer;">
+            <i class="fas fa-share" style="color: #007bff; font-size: 24px;"></i>
+        </button>
+    </form>
+    <div class='adjustName' style="margin-bottom: 20px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ card.name }}</div>
+    <p style="color: grey">filename: {{ card.fileName }}</p>
+    <div style="display: flex; justify-content: space-around;">
+        <a href="{{ card.fileName }}" id='viewNotesLinkCard' target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 24px; flex: 1;">View Notes</a>
+        <a href="{{ card.fileName }}" style="text-decoration: none; color: rgb(105, 105, 105); font-size: 15px; display: flex; align-items: center;" download>
+            <span style="margin-right: 5px;">or download</span>
+            <i class="fas fa-download"></i>
+        </a>
+    </div>
+</div>
+
+<script>
+document.getElementById('shareButtonCard').addEventListener('click', function(event) {
+    event.preventDefault();
+    var recipientEmail = document.getElementById('recipientEmail').value;
+    
+    var noteFileName = "{{ card.fileName }}"; // Replace with actual file name or URL
+          // Retrieve the anchor element
+    var viewNotesLink = document.getElementById('viewNotesLinkCard');
+    
+    // Set href attribute and target attribute
+    viewNotesLink.setAttribute('href', noteFileName);
+    viewNotesLink.setAttribute('target', '_blank');
+    var subject = "Check out this set of Q-Cards on The Study Resource!";
+    var body = "Hi,\n\nI thought you might find this set of Q-Cards interesting:\n\n" + viewNotesLink + "\n\nEnjoy!\n\n\n\n\n\n Why join {{WebsiteName}}? https://thestudyresource.pythonanywhere.com/createAccount";
+    var mailtoLink = "mailto:" + recipientEmail + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    window.location.href = mailtoLink;
+});
+</script>
+
+
+
+  {% endfor %}
+  </div>
+</div>
+
+<div id="Other" class="tabcontent">
+  <h3>Other</h3>
+  <div style="display: flex; flex-wrap: wrap; justify-content:center">
+  {% for note in mainClassOther%}
+  <div style="position: relative; border: 1px; width: 40vw; flex: 1 1 auto; margin: 20px 10px; background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);">
+    <form id="shareForm" style="position: absolute; top: 10px; right: 10px;">
+        <input type="hidden" name="classn" value="{{ mainClass.name }}">
+        <input type="hidden" name="likedANote" value="{{ note.id }}">
+        <input type="hidden" id="recipientEmail" placeholder="Recipient's Email">
+        <button id="shareButtonOther" style="background-color: transparent; border: none; cursor: pointer;">
+            <i class="fas fa-share" style="color: #007bff; font-size: 24px;"></i>
+        </button>
+    </form>
+    <div class='adjustName' style="margin-bottom: 20px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ note.name }}</div>
+    <p style="color: grey">filename: {{ note.fileName }}</p>
+    <div style="display: flex; justify-content: space-around;">
+        <a href="{{ note.fileName }}" id='viewOtherLink' target="_blank" style="text-decoration: none; color: #1c6ae7; font-size: 24px; flex: 1;">View Notes</a>
+        <a href="{{ note.fileName }}" style="text-decoration: none; color: rgb(105, 105, 105); font-size: 15px; display: flex; align-items: center;" download>
+            <span style="margin-right: 5px;">or download</span>
+            <i class="fas fa-download"></i>
+        </a>
+    </div>
+</div>
+
+<script>
+  document.getElementById('shareButtonOther').addEventListener('click', function(event) {
+  event.preventDefault();
+  var recipientEmail = document.getElementById('recipientEmail').value;
+  var noteFileName = "{{ note.fileName }}";
+  
+  // Retrieve the anchor element
+  var viewNotesLink = document.getElementById('viewOtherLink');
+  
+  // Set href attribute and target attribute
+  viewNotesLink.setAttribute('href', noteFileName);
+  viewNotesLink.setAttribute('target', '_blank');
+  var subject = "Check out this note!";
+  var body = "Hi,\n\nI thought you might find this note interesting:\n\n" + viewNotesLink + "\n\nEnjoy!";
+  var mailtoLink = "mailto:" + recipientEmail + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  window.location.href = mailtoLink;
+});
+</script>
+
+
+
+  {% endfor %}
+  </div>
+</div>
+
+
+<div id="followersClass" class="tabcontent">
+  <h3>Followers</h3>
+  
+  {% for u in follower_objects %}
+  <div style="background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+    <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc; margin-bottom: 10px;">
+        <h2 style="color: #1a237e; margin: 0;">{{u.username}}</h2>
+        <p style="color: #333; margin: 5px 0;">Email: {{u.email}}</p>
+    </div>
+    <form action="profileOther" method="post">
+        <input type="hidden" name="user_id_other" id="user_id_other" value="{{u.id}}">
+        <button type="submit" style="background-color: #1565c0; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; transition: background-color 0.3s ease;">See More</button>
+    </form>
+</div>
+  {% endfor %}
+</div>
+
+<script>
+function openTab(evt, tabName) {
+  // Get all elements with class="tabcontent" and hide them
+  var tabcontent = document.getElementsByClassName("tabcontent");
+  for (var i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  var tablinks = document.getElementsByClassName("tablinks");
+  for (var i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+
+</body>
+</html>

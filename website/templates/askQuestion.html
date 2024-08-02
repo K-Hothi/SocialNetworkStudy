@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+    <title>Ask a Question</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 17px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .buttonSymbol{
+            background-color: #000000;
+            font-weight: bold;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: large;
+        }
+        .scrollable-buttons {
+            max-height: 200px; /* Set the max height for the scrollable area */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+        .submitButton{
+            padding: 10px 20px; 
+            background-color: #1c6ae7; 
+            color: white; 
+            border: 1px #1c6ae7 solid;
+            border-radius: 20px;
+            cursor: pointer; 
+            font-size: 16px;
+            transition: all 0.3s ease; 
+            width: 100%;
+        }
+
+        .submitButton:hover{
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <form id="backForm">
+        <button type="submit">Back</button>
+    </form>
+    
+    <script>
+        document.getElementById('backForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            window.history.go(-2); // Navigate back two pages in the browsing history
+        });
+    </script>
+    <div class="container">
+        <h2>Have a Question?</h2>
+        <p style="color: grey;">Thank you for making The Study Resource a better place</p>
+
+        <hr>
+        <form action="askQuestion" method="post">
+            <div style="margin-bottom: 20px;">
+                <label for="class_name" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 18px;">Choose a class</label>
+                <select name="class_name" id="class_name" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;" required>
+                    {% for c in classesForward %}
+                    <option value="{{c.name}}">{{c.name}}</option>
+                    {% endfor %}
+                    <!-- Add more options as needed -->
+                </select>
+                <p style="color: grey"><i class="fas fa-question-circle"></i>&nbsp;Make sure to select the right class</p>
+            </div>
+            <div class="form-group">
+                <label for="title" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 18px;">Title</label>
+                <input type="text" id="title" name="title" placeholder="Add a short title"  required>
+            </div>
+            <div class="form-group">
+                <label for="content" style="display: block; font-weight: bold; margin-bottom: 5px; font-size: 18px;">Question</label>
+                <textarea id="content" name="content" rows="6" placeholder="Write your question here" required></textarea>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <button type="submit" class="submitButton">
+                    <i class="fas fa-paper-plane" style="margin-right: 5px;"></i> <!-- Send icon -->
+                    Submit
+                </button>
+                <p style="color: grey;"><i class="fas fa-lightbulb"></i>&nbsp;You can view your question under the class disscusion</p>
+            </div>
+            <hr style="margin: 20px 0px;">
+            <!-- Add special keyboard buttons for math symbols and science icons -->
+            <div class="form-group scrollable-buttons">
+            <div class="form-group">
+                <button type="button" onclick="insertText('√')" class="buttonSymbol">√</button>
+                <button type="button" onclick="insertText('π')" class="buttonSymbol">π</button>
+                <button type="button" onclick="insertText('≈')" class="buttonSymbol">≈</button>
+                <button type="button" onclick="insertText('∑')" class="buttonSymbol">∑</button>
+                <button type="button" onclick="insertText('∫')" class="buttonSymbol">∫</button>
+                <button type="button" onclick="insertText('Ω')" class="buttonSymbol">Ω</button>
+                <button type="button" onclick="insertText('∆')" class="buttonSymbol">∆</button>
+                <button type="button" onclick="insertText('∏')" class="buttonSymbol">∏</button>
+                <button type="button" onclick="insertText('≠')" class="buttonSymbol">≠</button>
+                <button type="button" onclick="insertText('∞')" class="buttonSymbol">∞</button>
+                <button type="button" onclick="insertText('°')" class="buttonSymbol">°</button>
+                <button type="button" onclick="insertText('∠')" class="buttonSymbol">∠</button>
+                <button type="button" onclick="insertText('±')" class="buttonSymbol">±</button>
+                <button type="button" onclick="insertText('∼')" class="buttonSymbol">∼</button>
+                <button type="button" onclick="insertText('∝')" class="buttonSymbol">∝</button>
+                <button type="button" onclick="insertText('∇')" class="buttonSymbol">∇</button>
+                <button type="button" onclick="insertText('∈')" class="buttonSymbol">∈</button>
+                <button type="button" onclick="insertText('∉')" class="buttonSymbol">∉</button>
+                <button type="button" onclick="insertText('lim')" class="buttonSymbol">lim</button>
+                <button type="button" onclick="insertText('∀')" class="buttonSymbol">∀</button>
+                <button type="button" onclick="insertText('∃')" class="buttonSymbol">∃</button>
+                <button type="button" onclick="insertText('∄')" class="buttonSymbol">∄</button>
+                <button type="button" onclick="insertText('∂')" class="buttonSymbol">∂</button>
+                <button type="button" onclick="insertText('∅')" class="buttonSymbol">∅</button>
+                <button type="button" onclick="insertText('∛')" class="buttonSymbol">∛</button>
+                <button type="button" onclick="insertText('∜')" class="buttonSymbol">∜</button>
+                <button type="button" onclick="insertText('∉')" class="buttonSymbol">∉</button>
+                <button type="button" onclick="insertText('∇̸')" class="buttonSymbol">∇̸</button>
+                <button type="button" onclick="insertText('≅')" class="buttonSymbol">≅</button>
+                <button type="button" onclick="insertText('∩')" class="buttonSymbol">∩</button>
+                <button type="button" onclick="insertText('∪')" class="buttonSymbol">∪</button>
+                <button type="button" onclick="insertText('⊂')" class="buttonSymbol">⊂</button>
+                <button type="button" onclick="insertText('⊃')" class="buttonSymbol">⊃</button>
+                <button type="button" onclick="insertText('⊆')" class="buttonSymbol">⊆</button>
+                <button type="button" onclick="insertText('⊇')" class="buttonSymbol">⊇</button>
+                <button type="button" onclick="insertText('⊄')" class="buttonSymbol">⊄</button>
+                <button type="button" onclick="insertText('⊅')" class="buttonSymbol">⊅</button>
+                <button type="button" onclick="insertText('⊊')" class="buttonSymbol">⊊</button>
+                <button type="button" onclick="insertText('⊋')" class="buttonSymbol">⊋</button>
+                <button type="button" onclick="insertText('∧')" class="buttonSymbol">∧</button>
+                <button type="button" onclick="insertText('∨')" class="buttonSymbol">∨</button>
+                <button type="button" onclick="insertText('∥')" class="buttonSymbol">∥</button>
+                <button type="button" onclick="insertText('∀')" class="buttonSymbol">∀</button>
+                <button type="button" onclick="insertText('∃')" class="buttonSymbol">∃</button>
+                <button type="button" onclick="insertText('∄')" class="buttonSymbol">∄</button>
+                <button type="button" onclick="insertText('∂')" class="buttonSymbol">∂</button>
+                <button type="button" onclick="insertText('∅')" class="buttonSymbol">∅</button>
+                <button type="button" onclick="insertText('∛')" class="buttonSymbol">∛</button>
+                <button type="button" onclick="insertText('∜')" class="buttonSymbol">∜</button>
+                <button type="button" onclick="insertText('∉')" class="buttonSymbol">∉</button>
+                <button type="button" onclick="insertText('∇̸')" class="buttonSymbol">∇̸</button>
+                <button type="button" onclick="insertText('≅')" class="buttonSymbol">≅</button>
+                <button type="button" onclick="insertText('∩')" class="buttonSymbol">∩</button>
+                <button type="button" onclick="insertText('∪')" class="buttonSymbol">∪</button>
+                <button type="button" onclick="insertText('⊂')" class="buttonSymbol">⊂</button>
+                <button type="button" onclick="insertText('⊃')" class="buttonSymbol">⊃</button>
+                <button type="button" onclick="insertText('⊆')" class="buttonSymbol">⊆</button>
+                <button type="button" onclick="insertText('⊇')" class="buttonSymbol">⊇</button>
+                <button type="button" onclick="insertText('⊄')" class="buttonSymbol">⊄</button>
+                <button type="button" onclick="insertText('⊅')" class="buttonSymbol">⊅</button>
+                <button type="button" onclick="insertText('⊊')" class="buttonSymbol">⊊</button>
+                <button type="button" onclick="insertText('⊋')" class="buttonSymbol">⊋</button>
+                <button type="button" onclick="insertText('∧')" class="buttonSymbol">∧</button>
+                <button type="button" onclick="insertText('∨')" class="buttonSymbol">∨</button>
+
+                <!-- Add more buttons for other symbols/icons as needed -->
+            </div>
+        </div>
+        
+
+        </form>
+    </div>
+
+    <script>
+        // Function to insert text into the textarea at the cursor position
+        function insertText(text) {
+            var textarea = document.getElementById('content');
+            var startPos = textarea.selectionStart;
+            var endPos = textarea.selectionEnd;
+            var textBefore = textarea.value.substring(0, startPos);
+            var textAfter = textarea.value.substring(endPos, textarea.value.length);
+            textarea.value = textBefore + text + textAfter;
+            textarea.focus();
+            textarea.setSelectionRange(startPos + text.length, startPos + text.length);
+        }
+
+        function toggleSpecialButtons() {
+            var specialButtons = document.getElementById('scrollable-buttons');
+            if (specialButtons.style.display === 'none') {
+                specialButtons.style.display = 'block';
+                document.getElementById('seeMoreBtn').textContent = 'See Less';
+            } else {
+                specialButtons.style.display = 'none';
+                document.getElementById('seeMoreBtn').textContent = 'See More';
+            }
+        }
+
+    </script>
+</body>
+</html>

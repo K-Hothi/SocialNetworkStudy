@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #ffffff, #e7fdff);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            width: 80%;
+            max-width: 1200px;
+        }
+        
+        .header {
+            margin-right: 20px;
+            text-align: left;
+            width: 50%;
+        }
+        
+        .header h1 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            color: #007bff;
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: none;
+        }
+        
+        .header p {
+            color: #000;
+            font-size: 20px;
+            line-height: 1.5;
+            display: none;
+        }
+        
+        .login-container {
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        
+        .login-container h2 {
+            color: #333;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group input {
+            width: calc(100% - 22px);
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .input-group input::placeholder {
+            font-size: 16px;
+        }
+        
+        .submit-btn {
+            width: calc(100% - 22px);
+            padding: 18px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn-divider {
+            margin: 20px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .create-account-btn {
+            background-color: transparent;
+            color: #007bff;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        
+        .create-account-btn:hover {
+            color: #0056b3;
+        }
+
+        .header .mobile-title{
+                display: none;
+            }
+
+        .header .mobile-description{
+                display: none;
+            }
+
+        .header h1{
+                display: block;
+            }
+        .header p{
+                display: block;
+            }
+
+        .mobile-footer{
+                display: none;
+            }
+        
+        .onSmall{
+            display: none;
+         }
+       /* CSS for screens narrower than 1000px */
+@media (max-width: 1000px) {
+    /* Adjust container layout */
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Adjust header styles */
+    .header {
+        width: 100%;
+        margin-right: 0;
+        text-align: center;
+    }
+
+    /* Adjust login container width */
+    .login-container {
+        width: 80%;
+    }
+
+    /* Adjust input field padding */
+    .input-group input {
+        padding: 14px; /* Maintain consistent padding */
+    }
+
+    /* Show mobile footer */
+    .mobile-footer {
+        display: block;
+    }
+
+    /* Adjust font sizes and spacing */
+    .header p {
+        font-size: 15px;
+        padding: 0 30px;
+    }
+
+    .header h1 {
+        font-size: 28px;
+        margin-top: 80px;
+        font-weight: lighter;
+    }
+}
+
+@media (max-width: 600px) {
+    .onSmall{
+        display:inline;
+        
+        background-color: #00a803;
+    }
+    .removeOnSmall{
+        display: none;
+    }
+    
+    .submit-btn {
+        padding: 8px;
+    }
+    .mobile-footer {
+        display: block;
+        font-size: 12px;
+    }
+
+    .header {
+        margin-right: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .login-container {
+        width: 80%;
+    }
+
+    .header p {
+        font-size: 15px;
+        padding: 0 30px;
+        display:none;
+    }
+
+    .header h1 {
+        display: none;
+        
+        
+    }
+
+    .header .mobile-title {
+        display: block;
+        color: #000000;
+        margin-top: 100px;
+        font-size: 1.6em;
+        padding: 0px;
+    }
+
+    .header .mobile-description {
+        display: contents;
+        color: rgb(92, 92, 92);
+        font-size: 15px;
+    }
+
+    /* Adjust input size */
+    .input-group input {
+        padding: 10px; /* Increase padding for larger input fields */
+        width: 100%;
+    }
+
+    
+}
+
+
+        
+    footer {
+        color: #333;
+        text-align: center;
+        padding: 20px 0;
+        width: 100%;
+        border-top: 1px solid #ccc;
+        
+    }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages%}
+                {% if category == 'error' %}
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f44336; color: white; padding: 10px; text-align: center;" id="error-message">
+                        {{message}}
+                    </div>
+                {% else %}
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #00a803; color: white; padding: 10px; text-align: center;" id="error-message">
+                        {{message}}
+                    </div>
+                {% endif %}
+            {% endfor%}
+        {% endif %}
+    {% endwith %}
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to {{WebsiteName}}</h1>
+            <h1 class="mobile-title">[ {{WebsiteName}} ]</h1>
+            <p>Connect to the largest repository for student notes, practice tests, and flashcards.</p>
+            <p class="mobile-description">Ready to start your Journey?</p>
+        </div>
+        <br>
+        <div class="login-container">
+            <p style="text-align: center; font-size: 20px;">Login to you account</p>
+    
+            <form action="#" method="POST">
+                <div class="input-group">
+                    <input type="text" id="email" name="email" placeholder="Email or Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+                
+                <div class="btn-divider"></div>
+                <a href="createAccount" class="create-account-btn removeOnSmall">Don't have an account? - Create Account</a>
+                <button onclick="window.location.href = 'createAccount';" class="submit-btn onSmall">Create Account</button>
+
+            </form>
+        </div>
+        
+            <p class="mobile-footer">&copy; 2024 {{WebsiteName}}. All rights reserved.</p>
+
+    </div>
+    
+
+</body>
+</html>

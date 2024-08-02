@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../static/Logos/alphabet_96900.ico">
+
+    <title>Add Class</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added box shadow */
+            transition: box-shadow 0.3s; /* Added transition for smooth effect */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increase box shadow on hover */
+            
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 0.5px solid #000000;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 18px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button[type="submit"] {
+            background-color: #24ab41;
+            color: #fff;
+            border: 1px #24ab41 solid;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 99%;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #ffffff;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #1c6ae7; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); cursor: pointer; z-index: 9999;">
+        <a href="/" class="fas fa-graduation-cap" style="color: white; font-size: 24px; text-decoration: none;"></a>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages%}
+            {% if category == 'error' %}
+                <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f44336; color: white; padding: 10px; text-align: center;" id="error-message">
+                    {{message}}
+                </div>
+            {% else %}
+                <div style="position: fixed; top: 0; left: 0; width: 100%; background-color: #00a803; color: white; padding: 10px; text-align: center;" id="error-message">
+                    {{message}}
+                </div>
+            {% endif %}
+        {% endfor%}
+    {% endif %}
+{% endwith %}
+
+
+    
+    <form  action="#" method="POST">
+        <header style="text-align: left;">
+            <h1 style="text-align: left;">Create a class</h1>
+            <p style="color: grey;"><i class="fas fa-lightbulb"></i>&nbsp;By creating a class students will be able to contribute freely and partake in disscusions</p>
+
+            <hr>
+            <br>
+        </header>
+        
+
+        <div>
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title" placeholder="Add a class name" required><br>
+
+        </div>
+        <div>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" rows="4" cols="50" placeholder="Add a short description of the class" 8required></textarea><br>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content:space-around;">
+            <div>
+                <label for="type">Class Type:</label>
+                <p>Public</p>
+            </div>
+            <div>
+                <label for="type">Age Restrictions:</label>
+                <p>None</p>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; flex-direction: column;">
+            <button type="submit">Create Class</button>
+            <p style="color: grey;"><i class="fas fa-question-circle"></i>&nbsp;Are you sure this class doesn't exist already?</p>
+        </div>
+        
+        </div>
+    </form>
+
+    
+</body>
+</html>
